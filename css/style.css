@@ -1,11 +1,8 @@
-/* ================================================
-   STACKLY NEWSPAPER — MAIN STYLESHEET
-   Inspired by The Hindu | Premium Design
-   ================================================ */
+
 
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap");
 
-/* ——— CSS Variables ——— */
+
 :root {
   --red: #c0392b;
   --red-dark: #96281b;
@@ -38,7 +35,7 @@
   --transition-fast: all 0.15s ease;
 }
 
-/* ——— Reset ——— */
+
 *,
 *::before,
 *::after {
@@ -76,7 +73,7 @@ button {
   font-family: inherit;
 }
 
-/* ——— Utility ——— */
+
 .container {
   max-width: 1280px;
   margin: 0 auto;
@@ -107,9 +104,7 @@ button {
   border-radius: 2px;
 }
 
-/* ============================
-   TOP BAR
-   ============================ */
+
 .top-bar {
   background: var(--navy);
   color: rgba(255, 255, 255, 0.8);
@@ -154,9 +149,7 @@ button {
   color: var(--gold-light);
 }
 
-/* ============================
-   HEADER
-   ============================ */
+
 .site-header {
   background: var(--white);
   border-bottom: 3px solid var(--navy);
@@ -239,7 +232,7 @@ button {
   border-color: var(--navy);
 }
 
-/* ——— Main Navigation ——— */
+
 .main-nav {
   background: var(--white);
 }
@@ -291,9 +284,7 @@ button {
   transition: var(--transition);
 }
 
-/* ============================
-   BREAKING NEWS TICKER
-   ============================ */
+
 .breaking-news {
   background: var(--red);
   color: var(--white);
@@ -351,9 +342,7 @@ button {
   }
 }
 
-/* ============================
-   HERO SLIDER
-   ============================ */
+
 .hero-slider {
   position: relative;
   overflow: hidden;
@@ -492,9 +481,7 @@ button {
   border-color: var(--red);
 }
 
-/* ============================
-   SECTION HEADERS
-   ============================ */
+
 .section-header {
   display: flex;
   align-items: center;
@@ -532,9 +519,7 @@ button {
   color: var(--red-dark);
 }
 
-/* ============================
-   NEWS CARDS
-   ============================ */
+
 .card {
   background: var(--white);
   border-radius: 3px;
@@ -606,7 +591,7 @@ button {
   color: var(--mid-gray);
 }
 
-/* ——— Card horizontal ——— */
+
 .card-h {
   display: flex;
   gap: 14px;
@@ -646,7 +631,7 @@ button {
   color: var(--dark-gray);
 }
 
-/* ——— Large feature card ——— */
+
 .card-feature .card-img {
   height: 280px;
 }
@@ -657,14 +642,12 @@ button {
   height: 220px;
 }
 
-/* ============================
-   HOMEPAGE LAYOUT
-   ============================ */
+
 .main-content {
   padding: 32px 0;
 }
 
-/* Top stories */
+
 .top-stories-grid {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
@@ -675,7 +658,7 @@ button {
   grid-row: span 2;
 }
 
-/* Section row */
+
 .section-row {
   margin-bottom: 40px;
 }
@@ -690,7 +673,7 @@ button {
   gap: 20px;
 }
 
-/* Two-col with sidebar */
+
 .two-col-layout {
   display: grid;
   grid-template-columns: 1fr 340px;
@@ -698,12 +681,10 @@ button {
   margin-bottom: 40px;
 }
 .sidebar {
-  /* aside */
+  
 }
 
-/* ============================
-   SIDEBAR WIDGETS
-   ============================ */
+
 .widget {
   background: var(--white);
   border: 1px solid var(--border);
@@ -761,7 +742,7 @@ button {
   color: var(--red);
 }
 
-/* ——— Ad placeholder ——— */
+
 .ad-placeholder {
   background: linear-gradient(135deg, var(--light-gray), var(--mid-gray));
   border: 2px dashed var(--mid-gray);
@@ -779,9 +760,7 @@ button {
   margin-bottom: 24px;
 }
 
-/* ============================
-   OPINION / EDITORIAL
-   ============================ */
+
 .opinion-section {
   background: var(--navy);
   padding: 40px 0;
@@ -853,9 +832,7 @@ button {
   color: rgba(255, 255, 255, 0.6);
 }
 
-/* ============================
-   PHOTO GALLERY STRIP
-   ============================ */
+
 .gallery-strip {
   margin-bottom: 40px;
 }
@@ -898,9 +875,7 @@ button {
   transform: translateY(0);
 }
 
-/* ============================
-   NEWSLETTER SIGNUP
-   ============================ */
+
 .newsletter {
   background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
   padding: 50px 0;
@@ -957,9 +932,7 @@ button {
   background: var(--red-dark);
 }
 
-/* ============================
-   FOOTER
-   ============================ */
+
 .site-footer {
   background: var(--navy);
   color: rgba(255, 255, 255, 0.75);
@@ -1068,9 +1041,7 @@ button {
   color: var(--white);
 }
 
-/* ============================
-   ARTICLE PAGE
-   ============================ */
+
 .article-hero {
   position: relative;
 }
@@ -1239,7 +1210,7 @@ button {
   border-color: var(--navy);
 }
 
-/* Author bio box */
+
 .author-bio {
   max-width: 800px;
   margin: 0 auto 40px;
@@ -1278,9 +1249,7 @@ button {
   line-height: 1.6;
 }
 
-/* ============================
-   CATEGORY PAGE
-   ============================ */
+
 .category-hero {
   background: var(--navy);
   padding: 50px 0;
@@ -1320,9 +1289,7 @@ button {
   height: 100%;
 }
 
-/* ============================
-   LIVE BADGE & MISC
-   ============================ */
+
 .live-badge {
   display: inline-flex;
   align-items: center;
@@ -1355,9 +1322,7 @@ button {
   }
 }
 
-/* ============================
-   SCROLL ANIMATIONS
-   ============================ */
+
 .reveal {
   opacity: 0;
   transform: translateY(24px);
@@ -1379,9 +1344,7 @@ button {
   transition-delay: 0.3s;
 }
 
-/* ============================
-   MOBILE MENU OVERLAY
-   ============================ */
+
 .mobile-menu {
   position: fixed;
   inset: 0;
@@ -1435,7 +1398,7 @@ button {
   padding-left: 32px;
 }
 
-/* Mobile Auth Section */
+
 .mobile-auth-section {
   padding: 20px 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -1463,9 +1426,7 @@ button {
   padding-left: 14px !important;
 }
 
-/* ============================
-   COMMENTS SECTION
-   ============================ */
+
 .comments-section {
   max-width: 800px;
   margin: 0 auto 60px;
@@ -1473,7 +1434,7 @@ button {
 }
 .comments-section .section-header { margin-bottom: 28px; }
 
-/* Comment Form */
+
 .comment-form-box {
   background: var(--light-gray);
   border: 1px solid var(--border);
@@ -1522,7 +1483,7 @@ button {
 }
 .comment-submit:hover { background: var(--red); transform: translateY(-1px); }
 
-/* Comment List */
+
 .comments-list { display: flex; flex-direction: column; gap: 0; }
 .comment-item {
   display: flex;
@@ -1595,7 +1556,7 @@ button {
 .comment-action-btn:hover { color: var(--red); }
 .comment-action-btn.liked { color: var(--red); }
 
-/* Replies (nested) */
+
 .comment-replies {
   margin-top: 16px;
   padding-left: 16px;
@@ -1604,7 +1565,7 @@ button {
 .comment-replies .comment-item { padding: 14px 0; }
 .comment-replies .comment-avatar { width: 34px; height: 34px; }
 
-/* Comment sort bar */
+
 .comments-sort {
   display: flex;
   align-items: center;
@@ -1628,9 +1589,7 @@ button {
 }
 .sort-btn:hover, .sort-btn.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
 
-/* ============================
-   404 ERROR PAGE
-   ============================ */
+
 .error-page {
   padding: 100px 0 140px;
   text-align: center;
@@ -1697,9 +1656,7 @@ button {
   box-shadow: var(--shadow-md);
 }
 
-/* ============================
-   ABOUT PAGE
-   ============================ */
+
 .about-hero {
   padding: 80px 0;
   background: var(--navy);
@@ -1755,9 +1712,7 @@ button {
   letter-spacing: 0.05em;
 }
 
-/* ============================
-   SERVICE PAGE
-   ============================ */
+
 .service-hero {
   padding: 80px 0;
   background: var(--off-white);
@@ -1814,9 +1769,7 @@ button {
   color: var(--red);
 }
 
-/* ============================
-   CONTACT PAGE
-   ============================ */
+
 .contact-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1875,9 +1828,7 @@ button {
   background: var(--red-dark);
 }
 
-/* ============================
-   BLOG GRID
-   ============================ */
+
 .blog-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -1885,13 +1836,11 @@ button {
   padding: 60px 0;
 }
 
-/* ============================
-   DROPDOWN MENU
-   ============================ */
+
 .nav-item.dropdown {
   position: relative;
 }
-/* Hover Bridge to prevent menu closure on gap */
+
 .nav-item.dropdown::after {
   content: '';
   position: absolute;
@@ -1951,7 +1900,7 @@ button {
   transform: rotate(180deg);
 }
 
-/* Mobile Dropdown */
+
 .mobile-dropdown-btn {
   display: flex;
   align-items: center;
@@ -1992,9 +1941,7 @@ button {
   opacity: 1;
 }
 
-/* ============================
-   AUTH PAGES (LOGIN/SIGNUP)
-   ============================ */
+
 .auth-page {
   display: flex;
   align-items: center;
@@ -2168,7 +2115,7 @@ select.form-control {
   text-decoration: underline;
 }
 
-/* ——— Dashboard Styles ——— */
+
 .dashboard-page {
   background: var(--off-white);
   min-height: 100vh;
@@ -2308,4 +2255,5 @@ select.form-control {
   color: var(--navy);
 }
 .dash-card-body { padding: 20px; }
+
 

@@ -1,9 +1,9 @@
-// ================================================
-// STACKLY NEWSPAPER — MAIN JAVASCRIPT
-// ================================================
+
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
-  // ——— Hero Slider ———
+  
   const slides = document.querySelectorAll(".slide");
   const dots = document.querySelectorAll(".slider-dot");
   let current = 0,
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (slides.length) startSlider();
 
-  // ——— Hamburger / Mobile Menu ———
+  
   const hamburger = document.querySelector(".hamburger");
   const mobileMenu = document.querySelector(".mobile-menu");
   const mobileClose = document.querySelector(".mobile-close");
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target === mobileMenu) mobileMenu.classList.remove("open");
   });
 
-  // ——— Scroll-reveal ———
+  
   const reveals = document.querySelectorAll(".reveal");
   const observer = new IntersectionObserver(
     (entries) => {
@@ -71,19 +71,19 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   reveals.forEach((el) => observer.observe(el));
 
-  // ——— Ticker duplication (seamless loop) ———
+  
   const ticker = document.querySelector(".ticker-content");
   if (ticker) {
     ticker.innerHTML += ticker.innerHTML;
   }
 
-  // ——— Active nav link ———
+  
   const page = location.pathname.split("/").pop() || "index.html";
   document.querySelectorAll(".nav-link").forEach((link) => {
     if (link.getAttribute("href") === page) link.classList.add("active");
   });
 
-  // ——— Newsletter form ———
+  
   const form = document.querySelector(".newsletter-form");
   form?.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -100,13 +100,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ——— Sticky header shadow ———
+  
   const header = document.querySelector(".site-header");
   window.addEventListener("scroll", () => {
     header?.classList.toggle("scrolled", window.scrollY > 60);
   });
 
-  // ——— Back to top (create dynamically) ———
+  
   const btt = document.createElement("button");
   btt.className = "back-to-top";
   btt.innerHTML = '<i class="fas fa-arrow-up"></i>';
@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo({ top: 0, behavior: "smooth" }),
   );
 
-  // ——— Reading progress bar ———
+  
   const progress = document.querySelector(".reading-progress");
   if (progress) {
     window.addEventListener("scroll", () => {
@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ——— Gallery lightbox (simple) ———
+  
   const galleryItems = document.querySelectorAll(".gallery-item");
   galleryItems.forEach((item) => {
     item.addEventListener("click", () => {
@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
       overlay.addEventListener("click", () => overlay.remove());
       document.body.appendChild(overlay);
     });
-  });  // ——— Comments Section Interactivity ———
+  });  
   const likeBtns = document.querySelectorAll('.like-btn');
   likeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1500);
   });
 
-  // ——— Mobile Dropdown Toggle ———
+  
   const dropBtns = document.querySelectorAll(".mobile-dropdown-btn");
   dropBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -200,7 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ——— Login Redirection Logic ———
+  
   const loginForm = document.getElementById('loginForm');
   if (loginForm) {
     loginForm.addEventListener('submit', (e) => {
@@ -208,13 +208,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const accountType = document.getElementById('account-type').value;
       const btn = loginForm.querySelector('.btn-auth');
       
-      // Simple visual feedback
+      
       const originalText = btn.textContent;
       btn.textContent = 'Authenticating...';
       btn.disabled = true;
 
       setTimeout(() => {
-        // Save username for dashboard personalization
+        
         const username = document.getElementById('email').value.split('@')[0];
         localStorage.setItem('stackly_username', username);
 
@@ -232,3 +232,4 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 });
+
