@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>World | STACKLY</title>
+  <meta name="description" content="Global news, international diplomacy, and world affairs — reporting from every corner of the globe by STACKLY." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%231a1a2e'/><text y='.9em' font-size='62' font-family='serif' font-weight='900' fill='%23c0392b'>S</text></svg>" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    .cat-layout { display: grid; grid-template-columns: 1fr 320px; gap: 40px; padding: 40px 0 60px; }
+    @media (max-width: 900px) { .cat-layout { grid-template-columns: 1fr; } }
+    /* Category filter tabs */
+    .filter-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+    .filter-tab {
+      font-family: var(--font-sans); font-size: .75rem; font-weight: 700;
+      letter-spacing: .07em; text-transform: uppercase;
+      padding: 7px 16px; border: 1px solid var(--border); border-radius: 20px;
+      color: var(--text-mid); cursor: pointer; transition: var(--transition-fast);
+    }
+    .filter-tab:hover, .filter-tab.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+
+    /* Pagination */
+    .pagination { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 40px; }
+    .page-btn {
+      width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-sans); font-size: .82rem; font-weight: 600;
+      border: 1px solid var(--border); border-radius: 3px; color: var(--text-mid);
+      cursor: pointer; transition: var(--transition-fast);
+    }
+    .page-btn:hover, .page-btn.active { background: var(--red); color: var(--white); border-color: var(--red); }
+
+    /* Big feature on category page */
+    .cat-feature {
+      display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px;
+      margin-bottom: 32px; border-bottom: 1px solid var(--border); padding-bottom: 32px;
+    }
+    @media (max-width: 600px) { .cat-feature { grid-template-columns: 1fr; } }
+    .cat-feature-img { width: 100%; height: 300px; object-fit: cover; border-radius: 3px; }
+    .cat-feature-body { display: flex; flex-direction: column; justify-content: center; }
+    .cat-feature-title {
+      font-family: var(--font-serif); font-size: 1.7rem; font-weight: 700;
+      line-height: 1.25; margin: 10px 0 14px; color: var(--text-dark);
+      transition: var(--transition-fast);
+    }
+    .cat-feature-title:hover { color: var(--red); }
+    .cat-feature-excerpt { font-family: var(--font-body); font-size: 1.05rem; color: var(--text-light); line-height: 1.65; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+
+<!-- ===== MOBILE MENU ===== -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-header">
+    <span class="mobile-menu-logo">STACK<span>LY</span></span>
+    <button class="mobile-close" id="mobileClose"><i class="fas fa-times"></i></button>
+  </div>
+  <ul class="mobile-nav-list">
+    <li><a href="index.html" class="mobile-nav-link">Home</a></li>
+    <li class="mobile-dropdown-wrapper">
+      <button class="mobile-dropdown-btn mobile-nav-link">
+        Categories <i class="fas fa-chevron-down"></i>
+      </button>
+      <ul class="mobile-submenu">
+        <li><a href="india.html" class="mobile-nav-link">India</a></li>
+        <li><a href="world.html" class="mobile-nav-link active">World</a></li>
+        <li><a href="politics.html" class="mobile-nav-link">Politics</a></li>
+        <li><a href="business.html" class="mobile-nav-link">Business</a></li>
+        <li><a href="sports.html" class="mobile-nav-link">Sports</a></li>
+        <li><a href="technology.html" class="mobile-nav-link">Technology</a></li>
+        <li><a href="entertainment.html" class="mobile-nav-link">Entertainment</a></li>
+        <li><a href="science.html" class="mobile-nav-link">Science</a></li>
+      </ul>
+    </li>
+    <li><a href="opinion.html" class="mobile-nav-link">Opinion</a></li>
+    <li><a href="magazine.html" class="mobile-nav-link">Magazine</a></li>
+    <li><a href="about.html" class="mobile-nav-link">About Us</a></li>
+    <li><a href="contact.html" class="mobile-nav-link">Contact</a></li>
+    <li class="mobile-auth-section">
+      <a href="login.html" class="mobile-login-btn">
+        <i class="fas fa-sign-in-alt"></i> Login / Register
+      </a>
+    </li>
+  </ul>
+</div>
+
+<!-- ===== SITE HEADER ===== -->
+<header class="site-header">
+  <div class="header-top container">
+    <span class="header-date">Wednesday | April 2, 2026 | Chennai</span>
+    <div class="logo-wrap">
+      <a href="index.html">
+        <div class="logo-text">STACK<span>LY</span></div>
+        <div class="logo-tagline">Truth. Depth. Integrity.</div>
+      </a>
+    </div>
+    <div class="header-actions">
+      <a href="#" class="btn-login">Login</a>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <nav class="main-nav">
+    <div class="container">
+      <ul class="nav-list">
+        <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-link active">Categories <i class="fas fa-chevron-down"></i></a>
+          <div class="dropdown-menu">
+            <a href="india.html" class="dropdown-item">India</a>
+            <a href="world.html" class="dropdown-item active">World</a>
+            <a href="politics.html" class="dropdown-item">Politics</a>
+            <a href="business.html" class="dropdown-item">Business</a>
+            <a href="sports.html" class="dropdown-item">Sports</a>
+            <a href="technology.html" class="dropdown-item">Technology</a>
+            <a href="entertainment.html" class="dropdown-item">Entertainment</a>
+            <a href="science.html" class="dropdown-item">Science</a>
+          </div>
+        </li>
+        <li class="nav-item"><a href="opinion.html" class="nav-link highlight">Opinion</a></li>
+        <li class="nav-item"><a href="magazine.html" class="nav-link">Magazine</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<!-- ===== CATEGORY HERO ===== -->
+<div class="category-hero">
+  <div class="container">
+    <p style="font-family:var(--font-sans);font-size:.75rem;color:rgba(255,255,255,.5);margin-bottom:8px;">
+      <a href="index.html" style="color:rgba(255,255,255,.5);">Home</a> &rsaquo; World
+    </p>
+    <h1 class="category-hero-title">World</h1>
+    <p class="category-hero-desc">Connecting you to the stories that shape our planet — from international summits to grassroots movements worldwide.</p>
+      <span style="font-family:var(--font-sans);font-size:.8rem;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:12px;margin-top:15px;">
+        <span style="color:var(--red);font-weight:bold;">Categories:</span>
+        <a href="404.html" style="color:white;text-decoration:none;">Diplomacy</a>
+        <a href="404.html" style="color:rgba(255,255,255,.6);text-decoration:none;">Conflicts</a>
+        <a href="404.html" style="color:rgba(255,255,255,.6);text-decoration:none;">Global Economy</a>
+        <a href="404.html" style="color:rgba(255,255,255,.6);text-decoration:none;">Climate</a>
+      </span>
+  <span style="font-family:var(--font-sans);font-size:.8rem;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:6px;"><i class="fas fa-clock"></i> Updated 20 min ago</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BREAKING NEWS ===== -->
+<div class="breaking-news">
+  <div class="container">
+    <span class="breaking-label"><i class="fas fa-bolt"></i> Breaking</span>
+    <div class="ticker-wrapper">
+      <div class="ticker-content">
+        <span class="ticker-item">UN Climate Summit yields binding commitments from 140 nations on net-zero targets</span>
+        <span class="ticker-separator">◆</span>
+        <span class="ticker-item">G7 leaders announce massive infrastructure fund for developing nations to rival Silk Road</span>
+        <span class="ticker-separator">◆</span>
+        <span class="ticker-item">India-EU trade deal finalised after 8 years of negotiations, set to boost bilateral trade by $100 billion</span>
+        <span class="ticker-separator">◆</span>
+        <span class="ticker-item">Global semiconductor shortage eases as new mega-fabs begin production in Europe and US</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="container">
+  <div class="cat-layout">
+
+    <main>
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <span class="filter-tab active">All</span>
+        <span class="filter-tab">Parliament</span>
+        <span class="filter-tab">Elections</span>
+        <span class="filter-tab">Policy</span>
+        <span class="filter-tab">State Politics</span>
+        <span class="filter-tab">International</span>
+        <span class="filter-tab">Judiciary</span>
+      </div>
+
+      <!-- Top Feature Story -->
+      <div class="cat-feature reveal">
+        <img src="images/hero_world.webp" alt="World Diplomacy" class="cat-feature-img" />
+        <div class="cat-feature-body">
+          <span class="category-badge">Diplomacy</span>
+          <a href="article.html"><h2 class="cat-feature-title">The New World Order: How Middle Powers are Redefining Global Geopolitics in 2026</h2></a>
+          <p class="cat-feature-excerpt">In a multi-polar world, nations like India, Brazil, and Indonesia are increasingly setting the agenda at international forums, challenging the traditional dominance of the G7.</p>
+          <div class="card-meta">
+            <span class="author">Kavita Iyer</span>
+            <span class="dot">•</span>
+            <span>Political Correspondent</span>
+            <span class="dot">•</span>
+            <span>3 hrs ago</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article Grid -->
+      <div class="news-grid-3 reveal">
+        <article class="card card-md">
+          <div class="card-img-wrap">
+            <img src="images/hero_main.webp" alt="Elections" class="card-img" />
+            <span class="category-badge">Elections</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">Five State Assemblies to Vote in April — Opinion Polls Show Tight Race in Three Regions</h3>
+            <p class="card-excerpt">As campaigning intensifies, political analysts say voter turnout and inflation will be the decisive twin factors in this round.</p>
+            <div class="card-meta"><span class="author">Meenal Kapoor</span><span class="dot">•</span><span>8 hrs ago</span></div>
+          </div>
+        </article>
+        <article class="card card-md">
+          <div class="card-img-wrap">
+            <img src="images/hero_politics.webp" alt="PM" class="card-img" />
+            <span class="category-badge">Policy</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">PM Announces ₹5 Lakh Crore Infrastructure Mission for 2026–2030 — Details Unveiled</h3>
+            <p class="card-excerpt">The ambitious plan includes 50 new smart cities, a national high-speed rail corridor, and 200 new airports in tier-2 towns across India.</p>
+            <div class="card-meta"><span class="author">Staff Reporter</span><span class="dot">•</span><span>6 hrs ago</span></div>
+          </div>
+        </article>
+        <article class="card card-md">
+          <div class="card-img-wrap">
+            <img src="images/hero_main.webp" alt="Supreme Court" class="card-img" />
+            <span class="category-badge">Judiciary</span>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">Supreme Court Delivers Verdict on Electoral Bonds — All Parties Must Disclose Donors Within 30 Days</h3>
+            <p class="card-excerpt">The court's 5-0 ruling is being hailed as the most consequential transparency judgment in Indian electoral history.</p>
+            <div class="card-meta"><span class="author">Pradeep Suri</span><span class="dot">•</span><span>Yesterday</span></div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Horizontal list of articles -->
+      <div style="margin-top:32px;" class="reveal">
+        <div class="section-header"><h2 class="section-title">More in <span>World</span></h2></div>
+
+        <div class="card-h">
+          <img src="images/hero_politics.webp" alt="" class="card-h-img" />
+          <div class="card-h-body">
+            <span class="category-badge" style="font-size:.6rem;padding:2px 7px;">State</span>
+            <p class="card-h-title" style="margin-top:5px;">Tamil Nadu CM unveils ₹1.2 lakh crore annual budget — record welfare spending announced</p>
+            <span class="card-h-meta">State Politics • 2 hrs ago • By Nalini Rajan</span>
+          </div>
+        </div>
+        <div class="card-h">
+          <img src="images/hero_main.webp" alt="" class="card-h-img" />
+          <div class="card-h-body">
+            <span class="category-badge" style="font-size:.6rem;padding:2px 7px;">Parliament</span>
+            <p class="card-h-title" style="margin-top:5px;">Opposition walks out of Lok Sabha during debate on Waqf Board Amendment Bill</p>
+            <span class="card-h-meta">Parliament • 4 hrs ago • By Rajan Varma</span>
+          </div>
+        </div>
+        <div class="card-h">
+          <img src="images/hero_politics.webp" alt="" class="card-h-img" />
+          <div class="card-h-body">
+            <span class="category-badge" style="font-size:.6rem;padding:2px 7px;">Policy</span>
+            <p class="card-h-title" style="margin-top:5px;">Cabinet approves new National Education Policy 2.0 — coding becomes mandatory from Class 3</p>
+            <span class="card-h-meta">Policy • 5 hrs ago • By Anitha Rao</span>
+          </div>
+        </div>
+        <div class="card-h">
+          <img src="images/hero_main.webp" alt="" class="card-h-img" />
+          <div class="card-h-body">
+            <span class="category-badge" style="font-size:.6rem;padding:2px 7px;">International</span>
+            <p class="card-h-title" style="margin-top:5px;">India assumes G20 Troika chairmanship — climate finance and AI governance on agenda</p>
+            <span class="card-h-meta">International • 6 hrs ago • By Shalini Bose</span>
+          </div>
+        </div>
+        <div class="card-h">
+          <img src="images/hero_politics.webp" alt="" class="card-h-img" />
+          <div class="card-h-body">
+            <span class="category-badge" style="font-size:.6rem;padding:2px 7px;">Elections</span>
+            <p class="card-h-title" style="margin-top:5px;">Model Code of Conduct kicks in for 5 states — EC deploys 4,800 observers across all constituencies</p>
+            <span class="card-h-meta">Elections • 8 hrs ago • By Staff Reporter</span>
+          </div>
+        </div>
+        <div class="card-h">
+          <img src="images/hero_main.webp" alt="" class="card-h-img" />
+          <div class="card-h-body">
+            <span class="category-badge" style="font-size:.6rem;padding:2px 7px;">State</span>
+            <p class="card-h-title" style="margin-top:5px;">Kerala government launches first-of-its-kind universal basic health insurance scheme for all residents</p>
+            <span class="card-h-meta">State Politics • Yesterday • By Vijay Kumar</span>
+          </div>
+        </div>
+        <div class="card-h">
+          <img src="images/hero_politics.webp" alt="" class="card-h-img" />
+          <div class="card-h-body">
+            <span class="category-badge" style="font-size:.6rem;padding:2px 7px;">Judiciary</span>
+            <p class="card-h-title" style="margin-top:5px;">SC stays demolition drive in UP, terms it "grossly disproportionate" — issues notice to state government</p>
+            <span class="card-h-meta">Judiciary • Yesterday • By Pradeep Suri</span>
+          </div>
+        </div>
+        <div class="card-h">
+          <img src="images/hero_main.webp" alt="" class="card-h-img" />
+          <div class="card-h-body">
+            <span class="category-badge" style="font-size:.6rem;padding:2px 7px;">Parliament</span>
+            <p class="card-h-title" style="margin-top:5px;">Rajya Sabha debate on Data Localisation Act enters third day — tech firms lobby intensifies</p>
+            <span class="card-h-meta">Parliament • 2 days ago • By Kavita Iyer</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <span style="font-family:var(--font-sans);font-size:.82rem;color:var(--dark-gray);">...</span>
+        <button class="page-btn">28</button>
+        <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </main>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="widget">
+        <div class="widget-header"><i class="fas fa-fire-alt"></i> Trending in World</div>
+        <div class="widget-body">
+          <div class="trending-list">
+            <div class="trending-item">
+              <span class="trending-num">01</span>
+              <div><p class="trending-title">UN holds special session on AI Ethics and Governance</p><span class="card-h-meta">650K reads</span></div>
+            </div>
+            <div class="trending-item">
+              <span class="trending-num">02</span>
+              <div><p class="trending-title">G20 leaders reach consensus on digital taxation framework</p><span class="card-h-meta">580K reads</span></div>
+            </div>
+            <div class="trending-item">
+              <span class="trending-num">03</span>
+              <div><p class="trending-title">Global energy transition progress report released by IEA</p><span class="card-h-meta">490K reads</span></div>
+            </div>
+            <div class="trending-item">
+              <span class="trending-num">04</span>
+              <div><p class="trending-title">Peace talks initiated in the Horn of Africa conflict zone</p><span class="card-h-meta">420K reads</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="widget">
+        <div class="widget-header"><i class="fas fa-podcast"></i> STACKLY Podcast</div>
+        <div class="widget-body">
+          <div style="background:var(--light-gray);border-radius:3px;padding:16px;text-align:center;">
+            <i class="fas fa-microphone" style="font-size:2rem;color:var(--red);margin-bottom:10px;display:block;"></i>
+            <p style="font-family:var(--font-serif);font-size:.95rem;font-weight:700;margin-bottom:6px;">"The Democracy Debate"</p>
+            <p style="font-family:var(--font-sans);font-size:.75rem;color:var(--text-light);">Episode 84 · 42 min</p>
+            <button style="margin-top:12px;background:var(--red);color:#fff;border:none;border-radius:20px;padding:8px 22px;font-family:var(--font-sans);font-size:.78rem;font-weight:700;cursor:pointer;"><i class="fas fa-play"></i> Listen Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="widget">
+        <div class="widget-header"><i class="fas fa-user-edit"></i> Columnists</div>
+        <div class="widget-body">
+          <div class="card-h" style="padding:10px 0;">
+            <img src="https://i.pravatar.cc/150?img=15" alt="Columnist" class="card-h-img" style="border-radius:50%;width:55px;height:55px;" />
+            <div class="card-h-body">
+              <p class="card-h-title">The Democracy We Deserve</p>
+              <span class="card-h-meta">Nandini Ramachandran</span>
+            </div>
+          </div>
+          <div class="card-h" style="padding:10px 0;">
+            <img src="https://i.pravatar.cc/150?img=32" alt="Columnist" class="card-h-img" style="border-radius:50%;width:55px;height:55px;" />
+            <div class="card-h-body">
+              <p class="card-h-title">Speaking Truth to Power</p>
+              <span class="card-h-meta">Rajnath Bose</span>
+            </div>
+          </div>
+          <div class="card-h" style="padding:10px 0;">
+            <img src="https://i.pravatar.cc/150?img=48" alt="Columnist" class="card-h-img" style="border-radius:50%;width:55px;height:55px;" />
+            <div class="card-h-body">
+              <p class="card-h-title">Federalism Under Pressure</p>
+              <span class="card-h-meta">Shashi Warrier</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ad-placeholder" style="display:flex;">
+        <i class="fas fa-ad" style="font-size:2rem;margin-bottom:10px;"></i>
+        Advertisement
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<!-- ===== NEWSLETTER ===== -->
+<section class="newsletter">
+  <div class="container">
+    <h2 class="newsletter-title">Stay Informed. Stay Ahead.</h2>
+    <p class="newsletter-sub">Join 2.4 million readers who trust STACKLY for their morning briefing.</p>
+    <form class="newsletter-form" onsubmit="return false;">
+      <input type="email" class="newsletter-input" placeholder="Enter your email address" />
+      <button type="submit" class="newsletter-btn">Subscribe <i class="fas fa-paper-plane"></i></button>
+    </form>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-logo">
+        <div class="logo-text">STACK<span>LY</span></div>
+        <p class="footer-desc">India's most trusted independent news platform. Fearless journalism, rigorous reporting, and a commitment to truth since 2020.</p>
+        <div class="social-links">
+          <a href="404.html" class="social-link"><i class="fab fa-facebook-f"></i></a>
+          <a href="404.html" class="social-link"><i class="fab fa-x-twitter"></i></a>
+          <a href="404.html" class="social-link"><i class="fab fa-instagram"></i></a>
+          <a href="404.html" class="social-link"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4 class="footer-col-title">News Sections</h4>
+        <ul class="footer-links">
+          <li><a href="india.html">India</a></li>
+          <li><a href="world.html">World</a></li>
+          <li><a href="politics.html">Politics</a></li>
+          <li><a href="business.html">Business</a></li>
+          <li><a href="sports.html">Sports</a></li>
+          <li><a href="technology.html">Technology</a></li>
+          <li><a href="entertainment.html">Entertainment</a></li>
+          <li><a href="science.html">Science</a></li>
+          <li><a href="opinion.html">Opinion</a></li>
+          <li><a href="magazine.html">Magazine</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-col-title">Company</h4>
+        <ul class="footer-links">
+          <li><a href="about.html">About STACKLY</a></li>
+          <li><a href="blog.html">Community Blog</a></li>
+          <li><a href="404.html">Editorial Team</a></li>
+          <li><a href="404.html">Careers</a></li>
+          <li><a href="service.html">Our Services</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-col-title">Contact</h4>
+        <ul class="footer-links">
+          <li><a href="contact.html">Contact Us</a></li>
+          <li><a href="404.html">Advertise</a></li>
+          <li><a href="404.html">Support</a></li>
+          <li><a href="404.html">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-bottom-text">&copy; 2026 STACKLY Media Pvt. Ltd. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="404.html">Privacy Policy</a>
+        <a href="404.html">Terms of Use</a>
+        <a href="404.html">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

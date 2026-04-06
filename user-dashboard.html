@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Dashboard | STACKLY</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%231a1a2e'/><text y='.9em' font-size='62' font-family='serif' font-weight='900' fill='%23c0392b'>S</text></svg>" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #1a1a2e;
+      --navy-light: #242440;
+      --red: #c0392b;
+      --red-light: #e74c3c;
+      --gold: #f0a500;
+      --green: #27ae60;
+      --border: #e8e8f0;
+      --bg: #f5f5fa;
+      --white: #ffffff;
+      --text-dark: #1a1a2e;
+      --text-mid: #555577;
+      --text-light: #8888aa;
+      --sidebar-w: 260px;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'DM Sans', sans-serif;
+      --radius: 10px;
+      --shadow: 0 2px 16px rgba(26,26,46,0.07);
+      --shadow-md: 0 4px 24px rgba(26,26,46,0.12);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-sans); background: var(--bg); color: var(--text-dark); min-height: 100vh; display: flex; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: fixed; top: 0; left: 0; z-index: 100;
+      transition: transform 0.3s ease;
+    }
+    .sidebar-brand {
+      padding: 24px 22px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .brand-logo { font-family: var(--font-serif); font-size: 1.5rem; color: var(--navy); }
+    .brand-logo span { color: var(--red); }
+    .back-link { font-size: 0.78rem; color: var(--text-light); text-decoration: none; display: flex; align-items: center; gap: 5px; margin-left: auto; }
+    .back-link:hover { color: var(--red); }
+
+    .sidebar-profile {
+      padding: 20px 22px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .user-avatar-wrap { position: relative; display: inline-block; margin-bottom: 10px; }
+    .user-avatar {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-serif); font-size: 1.4rem; font-weight: 700;
+      margin: 0 auto;
+    }
+    .online-dot {
+      position: absolute; bottom: 2px; right: 2px;
+      width: 14px; height: 14px; background: var(--green);
+      border-radius: 50%; border: 2px solid var(--white);
+    }
+    .user-name { font-family: var(--font-serif); font-size: 1.05rem; font-weight: 700; color: var(--navy); }
+    .user-plan {
+      display: inline-flex; align-items: center; gap: 5px; margin-top: 5px;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+      color: var(--gold); font-size: 0.68rem; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.1em;
+    }
+    .user-since { font-size: 0.72rem; color: var(--text-light); margin-top: 6px; }
+
+    .sidebar-nav { flex: 1; padding: 12px 0; overflow-y: auto; }
+    .nav-section-label {
+      font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em;
+      color: var(--text-light); padding: 14px 22px 5px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 11px;
+      padding: 11px 22px; color: var(--text-mid);
+      text-decoration: none; font-size: 0.88rem; font-weight: 400;
+      transition: all 0.2s; cursor: pointer; border: none; background: none; width: 100%;
+    }
+    .nav-item:hover { color: var(--navy); background: var(--bg); }
+    .nav-item.active { color: var(--red); font-weight: 600; background: rgba(192,57,43,0.06); border-right: 3px solid var(--red); }
+    .nav-item i { width: 18px; text-align: center; font-size: 0.88rem; }
+    .nav-badge {
+      margin-left: auto; background: var(--red); color: #fff;
+      font-size: 0.63rem; font-weight: 700; padding: 1px 7px; border-radius: 20px;
+    }
+
+    .sidebar-footer {
+      padding: 14px 22px;
+      border-top: 1px solid var(--border);
+    }
+    .btn-logout {
+      display: flex; align-items: center; gap: 8px;
+      color: var(--text-mid); text-decoration: none; font-size: 0.85rem;
+      padding: 8px 12px; border-radius: 6px; transition: all 0.2s;
+    }
+    .btn-logout:hover { background: rgba(192,57,43,0.07); color: var(--red); }
+
+    /* ── MAIN ── */
+    .main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      background: var(--white); border-bottom: 1px solid var(--border);
+      padding: 0 28px; height: 60px;
+      display: flex; align-items: center; gap: 12px;
+      position: sticky; top: 0; z-index: 50;
+    }
+    .hamburger-btn {
+      display: none; border: none; background: none; cursor: pointer;
+      color: var(--text-mid); font-size: 1.1rem;
+    }
+    .topbar-greeting { font-family: var(--font-serif); font-size: 1.1rem; color: var(--navy); }
+    .topbar-sub { font-size: 0.78rem; color: var(--text-light); }
+    .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+    .icon-btn {
+      position: relative; width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border); background: var(--white);
+      color: var(--text-mid); cursor: pointer; font-size: 0.9rem; transition: all 0.2s;
+    }
+    .icon-btn:hover { border-color: var(--navy); color: var(--navy); }
+    .notif-dot {
+      position: absolute; top: 6px; right: 6px; width: 7px; height: 7px;
+      background: var(--red); border-radius: 50%; border: 2px solid var(--white);
+    }
+    .search-bar {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+      padding: 6px 14px; font-size: 0.85rem;
+    }
+    .search-bar input {
+      border: none; background: none; outline: none;
+      font-family: var(--font-sans); font-size: 0.83rem; width: 160px; color: var(--text-dark);
+    }
+    .search-bar input::placeholder { color: var(--text-light); }
+
+    /* ── CONTENT ── */
+    .content { padding: 26px 28px; flex: 1; }
+
+    /* ── SUBSCRIPTION BANNER ── */
+    .sub-banner {
+      background: linear-gradient(135deg, var(--navy) 0%, #2d2d5a 100%);
+      border-radius: var(--radius); padding: 22px 28px;
+      display: flex; align-items: center; gap: 20px; margin-bottom: 24px;
+      color: #fff; position: relative; overflow: hidden;
+    }
+    .sub-banner::before {
+      content: ''; position: absolute; top: -40px; right: -40px;
+      width: 180px; height: 180px; border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .sub-banner::after {
+      content: ''; position: absolute; bottom: -60px; right: 80px;
+      width: 130px; height: 130px; border-radius: 50%;
+      background: rgba(192,57,43,0.2);
+    }
+    .sub-banner-icon { font-size: 1.8rem; color: var(--gold); flex-shrink: 0; }
+    .sub-banner-text { flex: 1; }
+    .sub-banner-title { font-family: var(--font-serif); font-size: 1.15rem; margin-bottom: 4px; }
+    .sub-banner-desc { font-size: 0.82rem; color: rgba(255,255,255,0.65); }
+    .sub-banner-right { flex-shrink: 0; text-align: right; }
+    .sub-days { font-family: var(--font-serif); font-size: 2rem; font-weight: 700; color: var(--gold); line-height: 1; }
+    .sub-days-label { font-size: 0.72rem; color: rgba(255,255,255,0.5); }
+    .btn-renew {
+      margin-top: 10px; display: inline-block; background: var(--red); color: #fff;
+      font-size: 0.78rem; font-weight: 600; padding: 7px 16px; border-radius: 5px;
+      text-decoration: none; transition: background 0.2s;
+    }
+    .btn-renew:hover { background: var(--red-light); }
+
+    /* ── STATS ROW ── */
+    .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-mini {
+      background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 18px 20px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 14px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-mini:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .stat-mini-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;
+    }
+    .stat-mini-icon.red { background: rgba(192,57,43,0.1); color: var(--red); }
+    .stat-mini-icon.navy { background: rgba(26,26,46,0.08); color: var(--navy); }
+    .stat-mini-icon.gold { background: rgba(240,165,0,0.1); color: var(--gold); }
+    .stat-mini-icon.green { background: rgba(39,174,96,0.1); color: var(--green); }
+    .stat-mini-val { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: var(--navy); line-height: 1; }
+    .stat-mini-label { font-size: 0.72rem; color: var(--text-light); margin-top: 2px; }
+
+    /* ── MAIN GRID ── */
+    .main-grid { display: grid; grid-template-columns: 1fr 320px; gap: 20px; margin-bottom: 24px; }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--white); border-radius: var(--radius);
+      border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden;
+    }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px; border-bottom: 1px solid var(--border);
+    }
+    .card-title { font-family: var(--font-serif); font-size: 1rem; color: var(--navy); }
+    .card-action { font-size: 0.78rem; color: var(--red); text-decoration: none; font-weight: 500; }
+    .card-action:hover { text-decoration: underline; }
+
+    /* ── READING FEED ── */
+    .reading-item {
+      display: flex; gap: 14px; padding: 16px 20px; border-bottom: 1px solid var(--border);
+      transition: background 0.15s; cursor: pointer; text-decoration: none; color: inherit;
+    }
+    .reading-item:last-child { border-bottom: none; }
+    .reading-item:hover { background: var(--bg); }
+    .reading-thumb {
+      width: 70px; height: 56px; border-radius: 6px;
+      background: var(--bg); flex-shrink: 0; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; color: var(--text-light);
+      font-size: 1.2rem;
+    }
+    .reading-content { flex: 1; min-width: 0; }
+    .reading-cat {
+      display: inline-block; font-size: 0.62rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; padding: 1px 6px; border-radius: 2px; margin-bottom: 5px;
+    }
+    .reading-cat.india { background: rgba(192,57,43,0.1); color: var(--red); }
+    .reading-cat.business { background: rgba(26,26,46,0.08); color: var(--navy); }
+    .reading-cat.tech { background: rgba(39,174,96,0.1); color: var(--green); }
+    .reading-cat.politics { background: rgba(240,165,0,0.1); color: #b07800; }
+    .reading-cat.sports { background: rgba(52,152,219,0.1); color: #2980b9; }
+    .reading-cat.world { background: rgba(155,89,182,0.1); color: #7d3c98; }
+    .reading-title { font-size: 0.88rem; font-weight: 500; color: var(--text-dark); line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .reading-meta { font-size: 0.72rem; color: var(--text-light); margin-top: 4px; }
+    .reading-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; flex-direction: column; justify-content: center; }
+    .icon-sm {
+      width: 30px; height: 30px; border-radius: 6px; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; font-size: 0.75rem;
+      color: var(--text-light); cursor: pointer; transition: all 0.15s; background: var(--white);
+    }
+    .icon-sm:hover { border-color: var(--red); color: var(--red); }
+    .icon-sm.bookmarked { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+    /* ── INTERESTS / TOPICS ── */
+    .topics-wrap { padding: 16px 20px; }
+    .topic-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .topic-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 500;
+      border: 1px solid var(--border); color: var(--text-mid); cursor: pointer; transition: all 0.2s;
+    }
+    .topic-chip.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .topic-chip:hover:not(.active) { border-color: var(--navy); color: var(--navy); }
+    .topic-chip i { font-size: 0.7rem; }
+
+    /* ── NOTIFICATIONS PANEL ── */
+    .notif-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 20px; border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .notif-item:last-child { border-bottom: none; }
+    .notif-item:hover { background: var(--bg); }
+    .notif-item.unread { background: rgba(192,57,43,0.03); }
+    .notif-icon {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 0.78rem;
+    }
+    .notif-icon.breaking { background: rgba(192,57,43,0.1); color: var(--red); }
+    .notif-icon.newsletter { background: rgba(26,26,46,0.08); color: var(--navy); }
+    .notif-icon.comment { background: rgba(39,174,96,0.1); color: var(--green); }
+    .notif-icon.sub { background: rgba(240,165,0,0.1); color: var(--gold); }
+    .notif-text { font-size: 0.82rem; color: var(--text-dark); line-height: 1.4; }
+    .notif-text strong { font-weight: 600; }
+    .notif-time { font-size: 0.7rem; color: var(--text-light); margin-top: 2px; }
+    .unread-badge {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--red); margin-left: auto; flex-shrink: 0; margin-top: 4px;
+    }
+
+    /* ── SECOND ROW ── */
+    .second-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+
+    /* ── BOOKMARKS ── */
+    .bookmark-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 20px; border-bottom: 1px solid var(--border); transition: background 0.15s;
+    }
+    .bookmark-item:last-child { border-bottom: none; }
+    .bookmark-item:hover { background: var(--bg); }
+    .bookmark-num { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 700; color: var(--border); min-width: 28px; }
+    .bookmark-content { flex: 1; min-width: 0; }
+    .bookmark-title { font-size: 0.86rem; font-weight: 500; color: var(--text-dark); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .bookmark-meta { font-size: 0.72rem; color: var(--text-light); margin-top: 2px; }
+    .btn-bm-remove { color: var(--text-light); font-size: 0.78rem; cursor: pointer; padding: 4px; }
+    .btn-bm-remove:hover { color: var(--red); }
+
+    /* ── NEWSLETTER PREFS ── */
+    .newsletter-pref {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 20px; border-bottom: 1px solid var(--border);
+    }
+    .newsletter-pref:last-child { border-bottom: none; }
+    .nl-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
+    .nl-icon.morning { background: rgba(240,165,0,0.1); color: var(--gold); }
+    .nl-icon.breaking { background: rgba(192,57,43,0.1); color: var(--red); }
+    .nl-icon.weekly { background: rgba(26,26,46,0.08); color: var(--navy); }
+    .nl-icon.podcast { background: rgba(39,174,96,0.1); color: var(--green); }
+    .nl-content { flex: 1; }
+    .nl-name { font-size: 0.86rem; font-weight: 500; color: var(--text-dark); }
+    .nl-freq { font-size: 0.72rem; color: var(--text-light); }
+    .toggle {
+      position: relative; width: 40px; height: 22px; flex-shrink: 0;
+    }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute; inset: 0; border-radius: 20px; background: var(--border);
+      cursor: pointer; transition: 0.3s;
+    }
+    .toggle-slider::before {
+      content: ''; position: absolute; height: 16px; width: 16px; border-radius: 50%;
+      left: 3px; bottom: 3px; background: var(--white); transition: 0.3s;
+    }
+    .toggle input:checked + .toggle-slider { background: var(--green); }
+    .toggle input:checked + .toggle-slider::before { transform: translateX(18px); }
+
+    /* ── PROFILE SECTION ── */
+    .profile-form { padding: 20px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 5px; }
+    .form-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-mid); }
+    .form-input {
+      padding: 9px 13px; border: 1px solid var(--border); border-radius: 6px;
+      font-family: var(--font-sans); font-size: 0.88rem; color: var(--text-dark);
+      outline: none; transition: border-color 0.2s; background: var(--white);
+    }
+    .form-input:focus { border-color: var(--navy); }
+    .btn-save {
+      background: var(--navy); color: var(--white);
+      border: none; border-radius: 6px; padding: 10px 22px;
+      font-family: var(--font-sans); font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .btn-save:hover { background: var(--navy-light); }
+    .btn-secondary {
+      background: none; color: var(--text-mid);
+      border: 1px solid var(--border); border-radius: 6px; padding: 10px 22px;
+      font-family: var(--font-sans); font-size: 0.88rem; font-weight: 500;
+      cursor: pointer; margin-left: 10px; transition: all 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── MOBILE OVERLAY ── */
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 90; }
+
+    /* ── TABS ── */
+    .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); padding: 0 20px; }
+    .tab-btn {
+      padding: 12px 16px; font-size: 0.83rem; font-weight: 500; color: var(--text-light);
+      border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: all 0.2s; font-family: var(--font-sans);
+    }
+    .tab-btn.active { color: var(--navy); border-bottom-color: var(--red); font-weight: 600; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) {
+      .stats-row { grid-template-columns: repeat(2,1fr); }
+      .main-grid { grid-template-columns: 1fr; }
+      .second-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay.open { display: block; }
+      .main { margin-left: 0; }
+      .topbar { padding: 0 16px; }
+      .hamburger-btn { display: flex; }
+      .content { padding: 18px 14px; }
+      .search-bar { display: none; }
+      .sub-banner { flex-wrap: wrap; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .sub-banner-right { width: 100%; text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">STACK<span>LY</span></div>
+    <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Site</a>
+  </div>
+
+  <div class="sidebar-profile">
+    <div class="user-avatar-wrap">
+      <div class="user-avatar">RK</div>
+      <div class="online-dot"></div>
+    </div>
+    <div class="user-name">Rajesh Kumar</div>
+    <div class="user-plan"><i class="fas fa-crown"></i> Annual Gold</div>
+    <div class="user-since">Member since March 2023</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">My Feed</div>
+    <a href="#" class="nav-item active" onclick="setActive(this)">
+      <i class="fas fa-house"></i> Dashboard
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-newspaper"></i> For You
+      <span class="nav-badge">12</span>
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-bookmark"></i> Bookmarks
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-history"></i> Reading History
+    </a>
+
+    <div class="nav-section-label">Preferences</div>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-sliders"></i> My Interests
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-envelope"></i> Newsletters
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-bell"></i> Notifications
+      <span class="nav-badge">3</span>
+    </a>
+
+    <div class="nav-section-label">Account</div>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-user"></i> My Profile
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-star"></i> Subscription
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-comments"></i> My Comments
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-shield-halved"></i> Privacy & Data
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-gear"></i> Settings
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a href="index.html" class="btn-logout">
+      <i class="fas fa-arrow-right-from-bracket"></i> Sign Out
+    </a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:10px;flex:1">
+      <button class="hamburger-btn" id="hamburgerBtn"><i class="fas fa-bars"></i></button>
+      <div>
+        <div class="topbar-greeting">Good morning, Rajesh 👋</div>
+        <div class="topbar-sub">Monday, April 6, 2026 · Chennai Edition</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="search-bar">
+        <i class="fas fa-magnifying-glass" style="color:var(--text-light)"></i>
+        <input type="text" placeholder="Search news…" />
+      </div>
+      <div class="icon-btn">
+        <i class="fas fa-bell"></i>
+        <div class="notif-dot"></div>
+      </div>
+      <div class="user-avatar" style="width:36px;height:36px;border-radius:8px;font-size:0.9rem;cursor:pointer;flex-shrink:0;">RK</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- SUBSCRIPTION BANNER -->
+    <div class="sub-banner">
+      <div class="sub-banner-icon"><i class="fas fa-crown"></i></div>
+      <div class="sub-banner-text">
+        <div class="sub-banner-title">Annual Gold Membership — Active</div>
+        <div class="sub-banner-desc">Enjoy unlimited ad-free reading, E-Paper, exclusive member podcasts, and up to 4 devices.</div>
+      </div>
+      <div class="sub-banner-right">
+        <div class="sub-days">247</div>
+        <div class="sub-days-label">days remaining</div>
+        <a href="service.html" class="btn-renew">Renew / Upgrade</a>
+      </div>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class="stats-row">
+      <div class="stat-mini">
+        <div class="stat-mini-icon red"><i class="fas fa-book-open"></i></div>
+        <div>
+          <div class="stat-mini-val">142</div>
+          <div class="stat-mini-label">Articles read this month</div>
+        </div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-mini-icon navy"><i class="fas fa-bookmark"></i></div>
+        <div>
+          <div class="stat-mini-val">28</div>
+          <div class="stat-mini-label">Saved bookmarks</div>
+        </div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-mini-icon gold"><i class="fas fa-clock"></i></div>
+        <div>
+          <div class="stat-mini-val">9.2h</div>
+          <div class="stat-mini-label">Reading time this week</div>
+        </div>
+      </div>
+      <div class="stat-mini">
+        <div class="stat-mini-icon green"><i class="fas fa-comments"></i></div>
+        <div>
+          <div class="stat-mini-val">17</div>
+          <div class="stat-mini-label">Comments posted</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="main-grid">
+
+      <!-- Recommended Feed -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Recommended For You</div>
+          <a href="#" class="card-action">Personalise →</a>
+        </div>
+        <div>
+          <a class="reading-item" href="article.html">
+            <div class="reading-thumb" style="background:#f0f0f8"><i class="fas fa-sun" style="color:#f0a500"></i></div>
+            <div class="reading-content">
+              <span class="reading-cat india">India</span>
+              <div class="reading-title">India Launches World's Largest Solar Initiative Linking 12 States</div>
+              <div class="reading-meta">Arjun Menon · 2 hrs ago · 6 min read</div>
+            </div>
+            <div class="reading-actions">
+              <div class="icon-sm bookmarked" title="Bookmarked"><i class="fas fa-bookmark"></i></div>
+              <div class="icon-sm" title="Share"><i class="fas fa-share-nodes"></i></div>
+            </div>
+          </a>
+          <a class="reading-item" href="article.html">
+            <div class="reading-thumb" style="background:#f0f8f0"><i class="fas fa-gavel" style="color:var(--navy)"></i></div>
+            <div class="reading-content">
+              <span class="reading-cat politics">Politics</span>
+              <div class="reading-title">Supreme Court Issues Landmark Ruling on Digital Privacy Rights</div>
+              <div class="reading-meta">Priya Krishnan · 4 hrs ago · 8 min read</div>
+            </div>
+            <div class="reading-actions">
+              <div class="icon-sm" title="Bookmark"><i class="far fa-bookmark"></i></div>
+              <div class="icon-sm" title="Share"><i class="fas fa-share-nodes"></i></div>
+            </div>
+          </a>
+          <a class="reading-item" href="article.html">
+            <div class="reading-thumb" style="background:#fff8e8"><i class="fas fa-chart-line" style="color:var(--gold)"></i></div>
+            <div class="reading-content">
+              <span class="reading-cat business">Business</span>
+              <div class="reading-title">RBI Keeps Repo Rate Unchanged at 6%; GDP Forecast Revised Upward</div>
+              <div class="reading-meta">Sita Raman · 5 hrs ago · 5 min read</div>
+            </div>
+            <div class="reading-actions">
+              <div class="icon-sm" title="Bookmark"><i class="far fa-bookmark"></i></div>
+              <div class="icon-sm" title="Share"><i class="fas fa-share-nodes"></i></div>
+            </div>
+          </a>
+          <a class="reading-item" href="article.html">
+            <div class="reading-thumb" style="background:#eef8ff"><i class="fas fa-satellite" style="color:#2980b9"></i></div>
+            <div class="reading-content">
+              <span class="reading-cat tech">Science</span>
+              <div class="reading-title">ISRO Successfully Deploys Advanced Communication Satellite — New Milestone</div>
+              <div class="reading-meta">Karan Verma · 8 hrs ago · 4 min read</div>
+            </div>
+            <div class="reading-actions">
+              <div class="icon-sm bookmarked" title="Bookmarked"><i class="fas fa-bookmark"></i></div>
+              <div class="icon-sm" title="Share"><i class="fas fa-share-nodes"></i></div>
+            </div>
+          </a>
+          <a class="reading-item" href="article.html">
+            <div class="reading-thumb" style="background:#f5f0ff"><i class="fas fa-chess" style="color:#7d3c98"></i></div>
+            <div class="reading-content">
+              <span class="reading-cat sports">Sports</span>
+              <div class="reading-title">India Wins Gold in Chess Olympiad for the Third Consecutive Year</div>
+              <div class="reading-meta">Rahul Sharma · 9 hrs ago · 3 min read</div>
+            </div>
+            <div class="reading-actions">
+              <div class="icon-sm" title="Bookmark"><i class="far fa-bookmark"></i></div>
+              <div class="icon-sm" title="Share"><i class="fas fa-share-nodes"></i></div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Notifications -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Notifications</div>
+          <a href="#" class="card-action">Mark all read</a>
+        </div>
+        <div>
+          <div class="notif-item unread">
+            <div class="notif-icon breaking"><i class="fas fa-bolt"></i></div>
+            <div class="notif-text">
+              <strong>Breaking:</strong> India-EU Trade Deal finalised — Read the full story
+              <div class="notif-time">5 min ago</div>
+            </div>
+            <div class="unread-badge"></div>
+          </div>
+          <div class="notif-item unread">
+            <div class="notif-icon newsletter"><i class="fas fa-envelope"></i></div>
+            <div class="notif-text">
+              Your <strong>Morning Briefing</strong> for Monday is ready
+              <div class="notif-time">7:00 AM</div>
+            </div>
+            <div class="unread-badge"></div>
+          </div>
+          <div class="notif-item unread">
+            <div class="notif-icon comment"><i class="fas fa-reply"></i></div>
+            <div class="notif-text">
+              <strong>Arjun Menon</strong> replied to your comment on the Solar story
+              <div class="notif-time">Yesterday</div>
+            </div>
+            <div class="unread-badge"></div>
+          </div>
+          <div class="notif-item">
+            <div class="notif-icon sub"><i class="fas fa-star"></i></div>
+            <div class="notif-text">
+              Your <strong>Gold subscription</strong> auto-renewed successfully
+              <div class="notif-time">2 days ago</div>
+            </div>
+          </div>
+          <div class="notif-item">
+            <div class="notif-icon newsletter"><i class="fas fa-podcast"></i></div>
+            <div class="notif-text">
+              <strong>New member podcast</strong>: Inside India's Space Economy (42 min)
+              <div class="notif-time">3 days ago</div>
+            </div>
+          </div>
+          <div class="notif-item">
+            <div class="notif-icon breaking"><i class="fas fa-newspaper"></i></div>
+            <div class="notif-text">
+              Weekly <strong>Business Digest</strong> — Your curated edition is ready
+              <div class="notif-time">Last Monday</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECOND ROW -->
+    <div class="second-row">
+      <!-- Bookmarks -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Saved Bookmarks</div>
+          <a href="#" class="card-action">View all 28 →</a>
+        </div>
+        <div>
+          <div class="bookmark-item">
+            <div class="bookmark-num">01</div>
+            <div class="bookmark-content">
+              <div class="bookmark-title">India Launches World's Largest Solar Initiative</div>
+              <div class="bookmark-meta">India · Saved today</div>
+            </div>
+            <div class="btn-bm-remove" title="Remove"><i class="fas fa-xmark"></i></div>
+          </div>
+          <div class="bookmark-item">
+            <div class="bookmark-num">02</div>
+            <div class="bookmark-content">
+              <div class="bookmark-title">ISRO Deploys Advanced Communication Satellite</div>
+              <div class="bookmark-meta">Science · Saved today</div>
+            </div>
+            <div class="btn-bm-remove" title="Remove"><i class="fas fa-xmark"></i></div>
+          </div>
+          <div class="bookmark-item">
+            <div class="bookmark-num">03</div>
+            <div class="bookmark-content">
+              <div class="bookmark-title">The Future of Data Privacy in India's Digital Economy</div>
+              <div class="bookmark-meta">Blog · Saved yesterday</div>
+            </div>
+            <div class="btn-bm-remove" title="Remove"><i class="fas fa-xmark"></i></div>
+          </div>
+          <div class="bookmark-item">
+            <div class="bookmark-num">04</div>
+            <div class="bookmark-content">
+              <div class="bookmark-title">Rediscovering Indigenous Grains in Urban India</div>
+              <div class="bookmark-meta">Magazine · Saved 3 days ago</div>
+            </div>
+            <div class="btn-bm-remove" title="Remove"><i class="fas fa-xmark"></i></div>
+          </div>
+          <div class="bookmark-item">
+            <div class="bookmark-num">05</div>
+            <div class="bookmark-content">
+              <div class="bookmark-title">RBI Holds Repo Rate; Outlook Cautiously Optimistic</div>
+              <div class="bookmark-meta">Business · Saved 1 week ago</div>
+            </div>
+            <div class="btn-bm-remove" title="Remove"><i class="fas fa-xmark"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Newsletters + Profile Tabs -->
+      <div class="card">
+        <div class="tabs">
+          <button class="tab-btn active" onclick="switchTab(this,'newsletters')">Newsletters</button>
+          <button class="tab-btn" onclick="switchTab(this,'profile')">My Profile</button>
+          <button class="tab-btn" onclick="switchTab(this,'interests')">Interests</button>
+        </div>
+
+        <div class="tab-panel active" id="tab-newsletters">
+          <div class="newsletter-pref">
+            <div class="nl-icon morning"><i class="fas fa-sun"></i></div>
+            <div class="nl-content">
+              <div class="nl-name">Morning Briefing</div>
+              <div class="nl-freq">Daily · 7:00 AM</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="newsletter-pref">
+            <div class="nl-icon breaking"><i class="fas fa-bolt"></i></div>
+            <div class="nl-content">
+              <div class="nl-name">Breaking News Alerts</div>
+              <div class="nl-freq">Instant · High priority</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="newsletter-pref">
+            <div class="nl-icon weekly"><i class="fas fa-newspaper"></i></div>
+            <div class="nl-content">
+              <div class="nl-name">Weekend Digest</div>
+              <div class="nl-freq">Weekly · Saturday 9 AM</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="newsletter-pref">
+            <div class="nl-icon podcast"><i class="fas fa-podcast"></i></div>
+            <div class="nl-content">
+              <div class="nl-name">Member Podcast</div>
+              <div class="nl-freq">Bi-weekly · Gold exclusive</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="newsletter-pref">
+            <div class="nl-icon morning" style="background:rgba(26,26,46,0.07);color:var(--navy)"><i class="fas fa-chart-line"></i></div>
+            <div class="nl-content">
+              <div class="nl-name">Business Weekly</div>
+              <div class="nl-freq">Weekly · Monday 8 AM</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="tab-profile">
+          <div class="profile-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">First Name</label>
+                <input class="form-input" type="text" value="Rajesh">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Last Name</label>
+                <input class="form-input" type="text" value="Kumar">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Email</label>
+                <input class="form-input" type="email" value="rajesh.kumar@email.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Phone</label>
+                <input class="form-input" type="tel" value="+91 98765 43210">
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom:14px">
+              <label class="form-label">City / Edition</label>
+              <input class="form-input" type="text" value="Chennai, Tamil Nadu">
+            </div>
+            <div>
+              <button class="btn-save">Save Changes</button>
+              <button class="btn-secondary">Change Password</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel" id="tab-interests">
+          <div class="topics-wrap">
+            <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:14px;">Select topics to personalise your feed:</p>
+            <div class="topic-chips">
+              <div class="topic-chip active" onclick="toggleChip(this)"><i class="fas fa-check"></i> India</div>
+              <div class="topic-chip active" onclick="toggleChip(this)"><i class="fas fa-check"></i> Business</div>
+              <div class="topic-chip active" onclick="toggleChip(this)"><i class="fas fa-check"></i> Science</div>
+              <div class="topic-chip" onclick="toggleChip(this)">Politics</div>
+              <div class="topic-chip" onclick="toggleChip(this)">Sports</div>
+              <div class="topic-chip active" onclick="toggleChip(this)"><i class="fas fa-check"></i> Technology</div>
+              <div class="topic-chip" onclick="toggleChip(this)">Entertainment</div>
+              <div class="topic-chip" onclick="toggleChip(this)">World</div>
+              <div class="topic-chip active" onclick="toggleChip(this)"><i class="fas fa-check"></i> Opinion</div>
+              <div class="topic-chip" onclick="toggleChip(this)">Magazine</div>
+            </div>
+            <button class="btn-save" style="margin-top:6px">Update Interests</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function setActive(el) {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  const hamburger = document.getElementById('hamburgerBtn');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  hamburger.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
+  });
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+  });
+
+  function switchTab(btn, tabId) {
+    btn.closest('.card').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    btn.closest('.card').querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+  }
+
+  function toggleChip(chip) {
+    if (chip.classList.contains('active')) {
+      chip.classList.remove('active');
+      chip.querySelector('i') && chip.querySelector('i').remove();
+    } else {
+      chip.classList.add('active');
+      chip.insertAdjacentHTML('afterbegin', '<i class="fas fa-check"></i> ');
+    }
+  }
+
+  // Remove bookmarks
+  document.querySelectorAll('.btn-bm-remove').forEach(btn => {
+    btn.addEventListener('click', function() {
+      this.closest('.bookmark-item').style.opacity = '0';
+      setTimeout(() => this.closest('.bookmark-item').remove(), 300);
+    });
+  });
+
+  // ——— Username Personalization ———
+  const storedUser = localStorage.getItem('stackly_username');
+  if (storedUser) {
+    const capsUser = storedUser.charAt(0).toUpperCase() + storedUser.slice(1);
+    const initials = storedUser.slice(0, 2).toUpperCase();
+    
+    // Update Greeting
+    const greeting = document.querySelector('.topbar-greeting');
+    if (greeting) {
+      const time = new Date().getHours();
+      const prefix = time < 12 ? 'Good morning' : time < 17 ? 'Good afternoon' : 'Good evening';
+      greeting.textContent = `${prefix}, ${capsUser} 👋`;
+    }
+    
+    // Update Sidebar/Profile Names
+    document.querySelectorAll('.user-name').forEach(el => el.textContent = capsUser);
+    
+    // Update Avatars
+    document.querySelectorAll('.user-avatar').forEach(av => av.textContent = initials);
+  }
+</script>
+</body>
+</html>

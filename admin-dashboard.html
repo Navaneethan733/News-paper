@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | STACKLY</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%231a1a2e'/><text y='.9em' font-size='62' font-family='serif' font-weight='900' fill='%23c0392b'>S</text></svg>" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #1a1a2e;
+      --navy-light: #242440;
+      --navy-mid: #2d2d52;
+      --red: #c0392b;
+      --red-light: #e74c3c;
+      --gold: #f0a500;
+      --green: #27ae60;
+      --border: #e8e8f0;
+      --bg: #f5f5fa;
+      --white: #ffffff;
+      --text-dark: #1a1a2e;
+      --text-mid: #555577;
+      --text-light: #8888aa;
+      --sidebar-w: 260px;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'DM Sans', sans-serif;
+      --radius: 10px;
+      --shadow: 0 2px 16px rgba(26,26,46,0.08);
+      --shadow-md: 0 4px 24px rgba(26,26,46,0.13);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-sans); background: var(--bg); color: var(--text-dark); min-height: 100vh; display: flex; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--navy);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 100;
+      transition: transform 0.3s ease;
+    }
+    .sidebar-brand {
+      padding: 28px 24px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .brand-logo { font-family: var(--font-serif); font-size: 1.6rem; color: #fff; letter-spacing: -0.5px; }
+    .brand-logo span { color: var(--red); }
+    .brand-tag { font-size: 0.68rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.15em; margin-top: 2px; }
+    .brand-admin-badge {
+      display: inline-block; margin-top: 10px;
+      background: var(--red); color: #fff;
+      font-size: 0.65rem; font-weight: 600;
+      padding: 2px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.1em;
+    }
+
+    .sidebar-nav { flex: 1; padding: 16px 0; overflow-y: auto; }
+    .nav-section-label {
+      font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.3); padding: 16px 24px 6px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 24px; color: rgba(255,255,255,0.65);
+      text-decoration: none; font-size: 0.9rem; font-weight: 400;
+      transition: all 0.2s; cursor: pointer; border: none; background: none; width: 100%; text-align: left;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.06); color: #fff; }
+    .nav-item.active { background: var(--red); color: #fff; font-weight: 500; }
+    .nav-item i { width: 18px; text-align: center; font-size: 0.9rem; }
+    .nav-badge {
+      margin-left: auto; background: var(--gold); color: var(--navy);
+      font-size: 0.65rem; font-weight: 700; padding: 1px 7px; border-radius: 20px;
+    }
+    .nav-badge.red { background: var(--red-light); color: #fff; }
+
+    .sidebar-footer {
+      padding: 16px 24px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .admin-user { display: flex; align-items: center; gap: 12px; }
+    .admin-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--red); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+    }
+    .admin-info { flex: 1; min-width: 0; }
+    .admin-name { font-size: 0.85rem; font-weight: 500; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .admin-role { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
+    .btn-logout { color: rgba(255,255,255,0.4); font-size: 0.85rem; text-decoration: none; }
+    .btn-logout:hover { color: var(--red-light); }
+
+    /* ── MAIN ── */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: sticky; top: 0; z-index: 50;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .hamburger-btn {
+      display: none; border: none; background: none; cursor: pointer;
+      color: var(--text-mid); font-size: 1.2rem; padding: 4px;
+    }
+    .page-title { font-family: var(--font-serif); font-size: 1.25rem; color: var(--navy); }
+    .breadcrumb { font-size: 0.8rem; color: var(--text-light); display: flex; align-items: center; gap: 6px; }
+    .breadcrumb a { color: var(--text-light); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--red); }
+
+    .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+    .search-bar {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: 7px 14px;
+      font-size: 0.85rem; color: var(--text-mid);
+    }
+    .search-bar input {
+      border: none; background: none; outline: none;
+      font-family: var(--font-sans); font-size: 0.85rem; color: var(--text-dark);
+      width: 180px;
+    }
+    .search-bar input::placeholder { color: var(--text-light); }
+    .icon-btn {
+      position: relative; width: 38px; height: 38px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border); background: var(--white);
+      color: var(--text-mid); cursor: pointer; font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+    .icon-btn:hover { border-color: var(--navy); color: var(--navy); }
+    .notif-dot {
+      position: absolute; top: 6px; right: 6px; width: 8px; height: 8px;
+      background: var(--red); border-radius: 50%; border: 2px solid var(--white);
+    }
+
+    /* ── CONTENT ── */
+    .content { padding: 28px 32px; flex: 1; }
+
+    /* ── STATS GRID ── */
+    .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; margin-bottom: 28px; }
+    .stat-card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 22px 24px; border: 1px solid var(--border);
+      box-shadow: var(--shadow); position: relative; overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .stat-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .stat-card.blue::before { background: var(--navy); }
+    .stat-card.red::before { background: var(--red); }
+    .stat-card.gold::before { background: var(--gold); }
+    .stat-card.green::before { background: var(--green); }
+
+    .stat-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-light); font-weight: 600; margin-bottom: 10px; }
+    .stat-value { font-family: var(--font-serif); font-size: 2rem; font-weight: 700; color: var(--navy); line-height: 1; margin-bottom: 10px; }
+    .stat-change { font-size: 0.78rem; display: flex; align-items: center; gap: 5px; }
+    .stat-change.up { color: var(--green); }
+    .stat-change.down { color: var(--red); }
+    .stat-icon {
+      position: absolute; top: 20px; right: 20px;
+      width: 42px; height: 42px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .stat-icon.blue { background: rgba(26,26,46,0.07); color: var(--navy); }
+    .stat-icon.red { background: rgba(192,57,43,0.1); color: var(--red); }
+    .stat-icon.gold { background: rgba(240,165,0,0.1); color: var(--gold); }
+    .stat-icon.green { background: rgba(39,174,96,0.1); color: var(--green); }
+
+    /* ── GRID LAYOUT ── */
+    .dashboard-grid { display: grid; grid-template-columns: 1fr 360px; gap: 20px; margin-bottom: 28px; }
+    .card {
+      background: var(--white); border-radius: var(--radius);
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 22px; border-bottom: 1px solid var(--border);
+    }
+    .card-title { font-family: var(--font-serif); font-size: 1.05rem; color: var(--navy); }
+    .card-action { font-size: 0.8rem; color: var(--red); text-decoration: none; font-weight: 500; }
+    .card-action:hover { text-decoration: underline; }
+    .card-body { padding: 0; }
+
+    /* ── ARTICLES TABLE ── */
+    .articles-table { width: 100%; border-collapse: collapse; }
+    .articles-table th {
+      text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--text-light); font-weight: 600; padding: 12px 22px;
+      background: var(--bg); border-bottom: 1px solid var(--border);
+    }
+    .articles-table td { padding: 14px 22px; border-bottom: 1px solid var(--border); font-size: 0.88rem; vertical-align: middle; }
+    .articles-table tr:last-child td { border-bottom: none; }
+    .articles-table tr:hover td { background: rgba(26,26,46,0.02); }
+    .art-title { font-weight: 500; color: var(--text-dark); line-height: 1.3; }
+    .art-meta { font-size: 0.75rem; color: var(--text-light); margin-top: 2px; }
+    .cat-tag {
+      display: inline-block; font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.07em; padding: 2px 8px; border-radius: 3px;
+    }
+    .cat-tag.india { background: rgba(192,57,43,0.1); color: var(--red); }
+    .cat-tag.business { background: rgba(26,26,46,0.08); color: var(--navy); }
+    .cat-tag.tech { background: rgba(39,174,96,0.1); color: var(--green); }
+    .cat-tag.politics { background: rgba(240,165,0,0.12); color: #b07800; }
+    .cat-tag.sports { background: rgba(52,152,219,0.1); color: #2980b9; }
+    .cat-tag.world { background: rgba(155,89,182,0.1); color: #7d3c98; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+    .status-dot.published { background: var(--green); }
+    .status-dot.draft { background: var(--gold); }
+    .status-dot.review { background: #3498db; }
+    .tbl-views { font-size: 0.82rem; color: var(--text-mid); }
+    .action-btns { display: flex; gap: 6px; }
+    .btn-tbl {
+      width: 28px; height: 28px; border-radius: 5px; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; cursor: pointer; color: var(--text-mid);
+      background: var(--white); transition: all 0.15s;
+    }
+    .btn-tbl:hover { border-color: var(--navy); color: var(--navy); background: var(--bg); }
+    .btn-tbl.del:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── ACTIVITY FEED ── */
+    .activity-feed { padding: 4px 0; }
+    .activity-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 22px; border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-item:hover { background: var(--bg); }
+    .act-icon {
+      width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 0.8rem;
+    }
+    .act-icon.user { background: rgba(26,26,46,0.08); color: var(--navy); }
+    .act-icon.article { background: rgba(192,57,43,0.1); color: var(--red); }
+    .act-icon.comment { background: rgba(39,174,96,0.1); color: var(--green); }
+    .act-icon.sub { background: rgba(240,165,0,0.12); color: var(--gold); }
+    .act-content { flex: 1; min-width: 0; }
+    .act-text { font-size: 0.84rem; color: var(--text-dark); line-height: 1.4; }
+    .act-text strong { font-weight: 600; }
+    .act-time { font-size: 0.72rem; color: var(--text-light); margin-top: 2px; }
+
+    /* ── SECOND ROW ── */
+    .second-row { display: grid; grid-template-columns: 1fr 1fr 300px; gap: 20px; margin-bottom: 28px; }
+
+    /* ── TOP CATEGORIES ── */
+    .cat-bar-wrap { padding: 16px 22px; }
+    .cat-bar-item { margin-bottom: 16px; }
+    .cat-bar-label { display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 5px; }
+    .cat-bar-label span:first-child { font-weight: 500; color: var(--text-dark); }
+    .cat-bar-label span:last-child { color: var(--text-light); }
+    .cat-bar { height: 6px; background: var(--bg); border-radius: 3px; overflow: hidden; }
+    .cat-bar-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }
+    .fill-red { background: var(--red); }
+    .fill-navy { background: var(--navy); }
+    .fill-green { background: var(--green); }
+    .fill-gold { background: var(--gold); }
+    .fill-blue { background: #3498db; }
+    .fill-purple { background: #9b59b6; }
+
+    /* ── QUICK ACTIONS ── */
+    .quick-actions { padding: 16px 22px; display: flex; flex-direction: column; gap: 10px; }
+    .quick-btn {
+      display: flex; align-items: center; gap: 12px;
+      padding: 13px 16px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--bg); cursor: pointer; text-decoration: none;
+      color: var(--text-dark); font-size: 0.88rem; font-weight: 500;
+      transition: all 0.2s;
+    }
+    .quick-btn:hover { border-color: var(--navy); background: var(--white); }
+    .quick-btn i { width: 20px; text-align: center; color: var(--red); }
+    .quick-btn .qa-desc { font-size: 0.72rem; color: var(--text-light); font-weight: 400; }
+
+    /* ── COMMENTS QUEUE ── */
+    .comment-item {
+      padding: 14px 22px; border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .comment-item:last-child { border-bottom: none; }
+    .comment-item:hover { background: var(--bg); }
+    .comment-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .commenter-avatar {
+      width: 26px; height: 26px; border-radius: 50%; background: var(--navy);
+      color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700;
+    }
+    .commenter-name { font-size: 0.82rem; font-weight: 600; color: var(--text-dark); }
+    .comment-art { font-size: 0.72rem; color: var(--text-light); margin-left: auto; }
+    .comment-text { font-size: 0.82rem; color: var(--text-mid); line-height: 1.4; margin-bottom: 8px; }
+    .comment-actions { display: flex; gap: 8px; }
+    .btn-approve {
+      font-size: 0.72rem; padding: 3px 10px; border-radius: 4px;
+      border: 1px solid var(--green); color: var(--green); background: none; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-approve:hover { background: var(--green); color: #fff; }
+    .btn-reject {
+      font-size: 0.72rem; padding: 3px 10px; border-radius: 4px;
+      border: 1px solid var(--border); color: var(--text-mid); background: none; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-reject:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── CHART MINI ── */
+    .mini-chart { padding: 16px 22px 10px; }
+    .chart-bars { display: flex; align-items: flex-end; gap: 6px; height: 100px; }
+    .chart-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .chart-bar {
+      width: 100%; border-radius: 3px 3px 0 0;
+      background: var(--navy); opacity: 0.15; transition: all 0.3s;
+      cursor: pointer; min-height: 4px;
+    }
+    .chart-bar.today { background: var(--red); opacity: 1; }
+    .chart-bar:hover { opacity: 0.8; }
+    .chart-bar.active { opacity: 0.6; }
+    .chart-label { font-size: 0.65rem; color: var(--text-light); }
+    .chart-legend { display: flex; gap: 14px; margin-top: 12px; }
+    .legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.74rem; color: var(--text-mid); }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* ── MOBILE OVERLAY ── */
+    .sidebar-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 90;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1200px) {
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .second-row { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 900px) {
+      .second-row { grid-template-columns: 1fr; }
+      .search-bar { display: none; }
+    }
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay.open { display: block; }
+      .main { margin-left: 0; }
+      .topbar { padding: 0 16px; }
+      .hamburger-btn { display: flex; }
+      .content { padding: 20px 16px; }
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .stat-value { font-size: 1.6rem; }
+      .articles-table th:nth-child(3),
+      .articles-table td:nth-child(3),
+      .articles-table th:nth-child(4),
+      .articles-table td:nth-child(4) { display: none; }
+    }
+    @media (max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">STACK<span>LY</span></div>
+    <div class="brand-tag">Truth. Depth. Integrity.</div>
+    <div class="brand-admin-badge"><i class="fas fa-shield-halved"></i> Admin Panel</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Overview</div>
+    <a href="#" class="nav-item active" onclick="setActive(this)">
+      <i class="fas fa-chart-line"></i> Dashboard
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-bell"></i> Notifications
+      <span class="nav-badge red">7</span>
+    </a>
+
+    <div class="nav-section-label">Content</div>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-newspaper"></i> All Articles
+      <span class="nav-badge">248</span>
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-pen-nib"></i> New Article
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-hourglass-half"></i> Drafts
+      <span class="nav-badge">12</span>
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-tags"></i> Categories
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-images"></i> Media Library
+    </a>
+
+    <div class="nav-section-label">Community</div>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-comments"></i> Comments
+      <span class="nav-badge">34</span>
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-users"></i> Users
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-star"></i> Subscribers
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-blog"></i> Blog Posts
+    </a>
+
+    <div class="nav-section-label">Revenue</div>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-indian-rupee-sign"></i> Subscriptions
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-chart-pie"></i> Analytics
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-bullhorn"></i> Advertising
+    </a>
+
+    <div class="nav-section-label">System</div>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-gear"></i> Settings
+    </a>
+    <a href="#" class="nav-item" onclick="setActive(this)">
+      <i class="fas fa-shield-halved"></i> Security
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="admin-user">
+      <div class="admin-avatar">MI</div>
+      <div class="admin-info">
+        <div class="admin-name">Meera Iyer</div>
+        <div class="admin-role">Editor-in-Chief</div>
+      </div>
+      <a href="index.html" class="btn-logout" title="Logout"><i class="fas fa-arrow-right-from-bracket"></i></a>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="hamburger-btn" id="hamburgerBtn"><i class="fas fa-bars"></i></button>
+      <div>
+        <div class="page-title">Dashboard</div>
+        <div class="breadcrumb">
+          <a href="#">STACKLY</a>
+          <i class="fas fa-chevron-right" style="font-size:0.6rem"></i>
+          <span>Admin Dashboard</span>
+        </div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="search-bar">
+        <i class="fas fa-magnifying-glass" style="color:var(--text-light)"></i>
+        <input type="text" placeholder="Search articles, users…" />
+      </div>
+      <div class="icon-btn" title="Notifications">
+        <i class="fas fa-bell"></i>
+        <div class="notif-dot"></div>
+      </div>
+      <div class="icon-btn" title="Settings">
+        <i class="fas fa-gear"></i>
+      </div>
+      <div class="admin-avatar" style="width:38px;height:38px;border-radius:8px;flex-shrink:0;cursor:pointer;" title="Meera Iyer">MI</div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card blue">
+        <div class="stat-icon blue"><i class="fas fa-eye"></i></div>
+        <div class="stat-label">Total Pageviews Today</div>
+        <div class="stat-value">2.41M</div>
+        <div class="stat-change up"><i class="fas fa-arrow-up"></i> 14.2% vs yesterday</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-icon red"><i class="fas fa-newspaper"></i></div>
+        <div class="stat-label">Articles Published</div>
+        <div class="stat-value">38</div>
+        <div class="stat-change up"><i class="fas fa-arrow-up"></i> 5 more than avg</div>
+      </div>
+      <div class="stat-card gold">
+        <div class="stat-icon gold"><i class="fas fa-users"></i></div>
+        <div class="stat-label">Active Subscribers</div>
+        <div class="stat-value">84.7K</div>
+        <div class="stat-change up"><i class="fas fa-arrow-up"></i> +312 this week</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon green"><i class="fas fa-indian-rupee-sign"></i></div>
+        <div class="stat-label">Monthly Revenue</div>
+        <div class="stat-value">₹24.9L</div>
+        <div class="stat-change down"><i class="fas fa-arrow-down"></i> 2.1% vs last month</div>
+      </div>
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="dashboard-grid">
+      <!-- Articles Table -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Recent Articles</div>
+          <a href="#" class="card-action">View All →</a>
+        </div>
+        <div class="card-body">
+          <table class="articles-table">
+            <thead>
+              <tr>
+                <th>Article</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Views</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="art-title">India Launches World's Largest Solar Initiative</div>
+                  <div class="art-meta">Arjun Menon • 2 hrs ago</div>
+                </td>
+                <td><span class="cat-tag india">India</span></td>
+                <td><span><span class="status-dot published"></span>Published</span></td>
+                <td class="tbl-views">48,210</td>
+                <td>
+                  <div class="action-btns">
+                    <div class="btn-tbl" title="Edit"><i class="fas fa-pen"></i></div>
+                    <div class="btn-tbl" title="View"><i class="fas fa-eye"></i></div>
+                    <div class="btn-tbl del" title="Delete"><i class="fas fa-trash"></i></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="art-title">Supreme Court Rules on Digital Privacy Rights</div>
+                  <div class="art-meta">Priya Krishnan • 4 hrs ago</div>
+                </td>
+                <td><span class="cat-tag politics">Politics</span></td>
+                <td><span><span class="status-dot published"></span>Published</span></td>
+                <td class="tbl-views">31,045</td>
+                <td>
+                  <div class="action-btns">
+                    <div class="btn-tbl"><i class="fas fa-pen"></i></div>
+                    <div class="btn-tbl"><i class="fas fa-eye"></i></div>
+                    <div class="btn-tbl del"><i class="fas fa-trash"></i></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="art-title">RBI Holds Repo Rate; GDP Forecast Revised Upward</div>
+                  <div class="art-meta">Sita Raman • 6 hrs ago</div>
+                </td>
+                <td><span class="cat-tag business">Business</span></td>
+                <td><span><span class="status-dot review"></span>In Review</span></td>
+                <td class="tbl-views">—</td>
+                <td>
+                  <div class="action-btns">
+                    <div class="btn-tbl"><i class="fas fa-pen"></i></div>
+                    <div class="btn-tbl"><i class="fas fa-eye"></i></div>
+                    <div class="btn-tbl del"><i class="fas fa-trash"></i></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="art-title">ISRO Deploys Advanced Communication Satellite</div>
+                  <div class="art-meta">Karan Verma • 8 hrs ago</div>
+                </td>
+                <td><span class="cat-tag tech">Science</span></td>
+                <td><span><span class="status-dot published"></span>Published</span></td>
+                <td class="tbl-views">22,780</td>
+                <td>
+                  <div class="action-btns">
+                    <div class="btn-tbl"><i class="fas fa-pen"></i></div>
+                    <div class="btn-tbl"><i class="fas fa-eye"></i></div>
+                    <div class="btn-tbl del"><i class="fas fa-trash"></i></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="art-title">India Wins Gold in Chess Olympiad — Third Consecutive</div>
+                  <div class="art-meta">Rahul Sharma • 9 hrs ago</div>
+                </td>
+                <td><span class="cat-tag sports">Sports</span></td>
+                <td><span><span class="status-dot published"></span>Published</span></td>
+                <td class="tbl-views">19,120</td>
+                <td>
+                  <div class="action-btns">
+                    <div class="btn-tbl"><i class="fas fa-pen"></i></div>
+                    <div class="btn-tbl"><i class="fas fa-eye"></i></div>
+                    <div class="btn-tbl del"><i class="fas fa-trash"></i></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="art-title">India-EU Trade Deal Finalised After 8 Years</div>
+                  <div class="art-meta">Meera Iyer • Yesterday</div>
+                </td>
+                <td><span class="cat-tag world">World</span></td>
+                <td><span><span class="status-dot draft"></span>Draft</span></td>
+                <td class="tbl-views">—</td>
+                <td>
+                  <div class="action-btns">
+                    <div class="btn-tbl"><i class="fas fa-pen"></i></div>
+                    <div class="btn-tbl"><i class="fas fa-eye"></i></div>
+                    <div class="btn-tbl del"><i class="fas fa-trash"></i></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Activity Feed -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Live Activity</div>
+          <a href="#" class="card-action">All →</a>
+        </div>
+        <div class="activity-feed">
+          <div class="activity-item">
+            <div class="act-icon sub"><i class="fas fa-star"></i></div>
+            <div class="act-content">
+              <div class="act-text"><strong>Rajesh Kumar</strong> upgraded to Annual Gold plan</div>
+              <div class="act-time">2 minutes ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-icon comment"><i class="fas fa-comment"></i></div>
+            <div class="act-content">
+              <div class="act-text"><strong>Ananya S.</strong> commented on Solar Initiative story</div>
+              <div class="act-time">7 minutes ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-icon article"><i class="fas fa-newspaper"></i></div>
+            <div class="act-content">
+              <div class="act-text"><strong>Priya Krishnan</strong> submitted article for review</div>
+              <div class="act-time">15 minutes ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-icon user"><i class="fas fa-user-plus"></i></div>
+            <div class="act-content">
+              <div class="act-text"><strong>3 new users</strong> registered from Chennai edition</div>
+              <div class="act-time">22 minutes ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-icon article"><i class="fas fa-pen-nib"></i></div>
+            <div class="act-content">
+              <div class="act-text"><strong>Arjun Menon</strong> published breaking news article</div>
+              <div class="act-time">1 hour ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-icon sub"><i class="fas fa-star"></i></div>
+            <div class="act-content">
+              <div class="act-text"><strong>TechSphere Corp</strong> activated Corporate plan</div>
+              <div class="act-time">2 hours ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-icon comment"><i class="fas fa-flag"></i></div>
+            <div class="act-content">
+              <div class="act-text"><strong>Comment flagged</strong> for review on Politics story</div>
+              <div class="act-time">3 hours ago</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-icon user"><i class="fas fa-user"></i></div>
+            <div class="act-content">
+              <div class="act-text"><strong>Meera Iyer</strong> updated editorial guidelines doc</div>
+              <div class="act-time">4 hours ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECOND ROW -->
+    <div class="second-row">
+      <!-- Traffic Chart -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Weekly Traffic</div>
+          <a href="#" class="card-action">Analytics →</a>
+        </div>
+        <div class="mini-chart">
+          <div class="chart-bars">
+            <div class="chart-bar-wrap">
+              <div class="chart-bar active" style="height:52%"></div>
+              <div class="chart-label">Mon</div>
+            </div>
+            <div class="chart-bar-wrap">
+              <div class="chart-bar active" style="height:68%"></div>
+              <div class="chart-label">Tue</div>
+            </div>
+            <div class="chart-bar-wrap">
+              <div class="chart-bar active" style="height:45%"></div>
+              <div class="chart-label">Wed</div>
+            </div>
+            <div class="chart-bar-wrap">
+              <div class="chart-bar active" style="height:80%"></div>
+              <div class="chart-label">Thu</div>
+            </div>
+            <div class="chart-bar-wrap">
+              <div class="chart-bar active" style="height:63%"></div>
+              <div class="chart-label">Fri</div>
+            </div>
+            <div class="chart-bar-wrap">
+              <div class="chart-bar active" style="height:71%"></div>
+              <div class="chart-label">Sat</div>
+            </div>
+            <div class="chart-bar-wrap">
+              <div class="chart-bar today" style="height:90%"></div>
+              <div class="chart-label">Today</div>
+            </div>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background:var(--navy);opacity:0.6"></div>
+              <span>Previous days</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background:var(--red)"></div>
+              <span>Today (2.41M)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Performance -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Top Sections</div>
+          <a href="#" class="card-action">Details →</a>
+        </div>
+        <div class="cat-bar-wrap">
+          <div class="cat-bar-item">
+            <div class="cat-bar-label"><span>India</span><span>48,210 views</span></div>
+            <div class="cat-bar"><div class="cat-bar-fill fill-red" style="width:92%"></div></div>
+          </div>
+          <div class="cat-bar-item">
+            <div class="cat-bar-label"><span>Politics</span><span>31,045 views</span></div>
+            <div class="cat-bar"><div class="cat-bar-fill fill-gold" style="width:59%"></div></div>
+          </div>
+          <div class="cat-bar-item">
+            <div class="cat-bar-label"><span>Business</span><span>22,780 views</span></div>
+            <div class="cat-bar"><div class="cat-bar-fill fill-navy" style="width:43%"></div></div>
+          </div>
+          <div class="cat-bar-item">
+            <div class="cat-bar-label"><span>Sports</span><span>19,120 views</span></div>
+            <div class="cat-bar"><div class="cat-bar-fill fill-blue" style="width:36%"></div></div>
+          </div>
+          <div class="cat-bar-item">
+            <div class="cat-bar-label"><span>Technology</span><span>14,560 views</span></div>
+            <div class="cat-bar"><div class="cat-bar-fill fill-green" style="width:28%"></div></div>
+          </div>
+          <div class="cat-bar-item">
+            <div class="cat-bar-label"><span>World</span><span>11,320 views</span></div>
+            <div class="cat-bar"><div class="cat-bar-fill fill-purple" style="width:22%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Quick Actions</div>
+        </div>
+        <div class="quick-actions">
+          <a href="#" class="quick-btn">
+            <i class="fas fa-pen-nib"></i>
+            <div>
+              <div>New Article</div>
+              <div class="qa-desc">Start writing a story</div>
+            </div>
+          </a>
+          <a href="#" class="quick-btn">
+            <i class="fas fa-comments"></i>
+            <div>
+              <div>Moderate Comments</div>
+              <div class="qa-desc">34 awaiting review</div>
+            </div>
+          </a>
+          <a href="#" class="quick-btn">
+            <i class="fas fa-user-plus"></i>
+            <div>
+              <div>Add Journalist</div>
+              <div class="qa-desc">Invite team member</div>
+            </div>
+          </a>
+          <a href="#" class="quick-btn">
+            <i class="fas fa-bolt"></i>
+            <div>
+              <div>Breaking News Alert</div>
+              <div class="qa-desc">Push ticker update</div>
+            </div>
+          </a>
+          <a href="#" class="quick-btn">
+            <i class="fas fa-chart-line"></i>
+            <div>
+              <div>Full Analytics</div>
+              <div class="qa-desc">Detailed reports</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMMENTS QUEUE -->
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-header">
+        <div class="card-title">Comments Awaiting Approval <span style="color:var(--red);font-size:0.85rem;font-weight:400"> — 34 pending</span></div>
+        <a href="#" class="card-action">Moderate All →</a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));">
+        <div class="comment-item">
+          <div class="comment-head">
+            <div class="commenter-avatar">RK</div>
+            <div class="commenter-name">Rajesh K.</div>
+            <div class="comment-art">Solar Initiative</div>
+          </div>
+          <div class="comment-text">"This is a monumental step for India's clean energy future. Hope the implementation matches the ambition."</div>
+          <div class="comment-actions">
+            <button class="btn-approve">Approve</button>
+            <button class="btn-reject">Reject</button>
+          </div>
+        </div>
+        <div class="comment-item">
+          <div class="comment-head">
+            <div class="commenter-avatar" style="background:var(--red)">AS</div>
+            <div class="commenter-name">Ananya S.</div>
+            <div class="comment-art">Privacy Rights</div>
+          </div>
+          <div class="comment-text">"The Supreme Court ruling is a step in the right direction. Data sovereignty matters for every citizen."</div>
+          <div class="comment-actions">
+            <button class="btn-approve">Approve</button>
+            <button class="btn-reject">Reject</button>
+          </div>
+        </div>
+        <div class="comment-item">
+          <div class="comment-head">
+            <div class="commenter-avatar" style="background:var(--green)">VP</div>
+            <div class="commenter-name">Vikram P.</div>
+            <div class="comment-art">Chess Olympiad</div>
+          </div>
+          <div class="comment-text">"Three golds in a row! India's chess program has been phenomenal. Proud moment for the nation."</div>
+          <div class="comment-actions">
+            <button class="btn-approve">Approve</button>
+            <button class="btn-reject">Reject</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+  function setActive(el) {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    el.classList.add('active');
+  }
+  const hamburger = document.getElementById('hamburgerBtn');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  hamburger.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
+  });
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+  });
+
+  // Approve/Reject buttons
+  document.querySelectorAll('.btn-approve').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const item = this.closest('.comment-item');
+      item.style.opacity = '0.4';
+      item.style.pointerEvents = 'none';
+      this.textContent = '✓ Approved';
+      this.style.background = 'var(--green)';
+      this.style.color = '#fff';
+    });
+  });
+  document.querySelectorAll('.btn-reject').forEach(btn => {
+    btn.addEventListener('click', function() {
+      this.closest('.comment-item').style.display = 'none';
+    });
+  });
+
+  // ——— Username Personalization ———
+  const storedUser = localStorage.getItem('stackly_username');
+  if (storedUser) {
+    const capsUser = storedUser.charAt(0).toUpperCase() + storedUser.slice(1);
+    const initials = storedUser.slice(0, 2).toUpperCase();
+    
+    // Update Sidebar/Topbar Admin Name
+    document.querySelectorAll('.admin-name').forEach(el => el.textContent = capsUser);
+    
+    // Update Avatars
+    document.querySelectorAll('.admin-avatar').forEach(av => av.textContent = initials);
+  }
+</script>
+</body>
+</html>

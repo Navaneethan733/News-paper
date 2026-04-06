@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STACKLY Blog | Community, Culture & Conversations</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%231a1a2e'/><text y='.9em' font-size='62' font-family='serif' font-weight='900' fill='%23c0392b'>S</text></svg>" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <!-- ===== MOBILE MENU ===== -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <span class="mobile-menu-logo">STACK<span>LY</span></span>
+            <button class="mobile-close" id="mobileClose"><i class="fas fa-times"></i></button>
+        </div>
+        <ul class="mobile-nav-list">
+            <li><a href="index.html" class="mobile-nav-link">Home</a></li>
+            <li class="mobile-dropdown-wrapper">
+                <button class="mobile-dropdown-btn mobile-nav-link">
+                    Categories <i class="fas fa-chevron-down"></i>
+                </button>
+                <ul class="mobile-submenu">
+                    <li><a href="india.html" class="mobile-nav-link">India</a></li>
+                    <li><a href="world.html" class="mobile-nav-link">World</a></li>
+                    <li><a href="politics.html" class="mobile-nav-link">Politics</a></li>
+                    <li><a href="business.html" class="mobile-nav-link">Business</a></li>
+                    <li><a href="sports.html" class="mobile-nav-link">Sports</a></li>
+                    <li><a href="technology.html" class="mobile-nav-link">Technology</a></li>
+                    <li><a href="entertainment.html" class="mobile-nav-link">Entertainment</a></li>
+                    <li><a href="science.html" class="mobile-nav-link">Science</a></li>
+                </ul>
+            </li>
+            <li><a href="opinion.html" class="mobile-nav-link">Opinion</a></li>
+            <li><a href="magazine.html" class="mobile-nav-link">Magazine</a></li>
+            <li><a href="about.html" class="mobile-nav-link">About Us</a></li>
+            <li><a href="contact.html" class="mobile-nav-link">Contact</a></li>
+            <li class="mobile-auth-section">
+                <a href="login.html" class="mobile-login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login / Register
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- ===== SITE HEADER ===== -->
+    <header class="site-header">
+        <div class="header-top container">
+            <span class="header-date">Wednesday | April 2, 2026 | Chennai</span>
+            <div class="logo-wrap">
+                <a href="index.html">
+                    <div class="logo-text">STACK<span>LY</span></div>
+                    <div class="logo-tagline">Truth. Depth. Integrity.</div>
+                </a>
+            </div>
+            <div class="header-actions">
+                <a href="#" class="btn-login">Login</a>
+                <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <div class="container">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-link">Categories <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-menu">
+                            <a href="india.html" class="dropdown-item">India</a>
+                            <a href="world.html" class="dropdown-item">World</a>
+                            <a href="politics.html" class="dropdown-item">Politics</a>
+                            <a href="business.html" class="dropdown-item">Business</a>
+                            <a href="sports.html" class="dropdown-item">Sports</a>
+                            <a href="technology.html" class="dropdown-item">Technology</a>
+                            <a href="entertainment.html" class="dropdown-item">Entertainment</a>
+                            <a href="science.html" class="dropdown-item">Science</a>
+                        </div>
+                    </li>
+                    <li class="nav-item"><a href="opinion.html" class="nav-link highlight">Opinion</a></li>
+                    <li class="nav-item"><a href="magazine.html" class="nav-link">Magazine</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container" style="padding-top: 60px;">
+        <div style="text-align: center; margin-bottom: 60px;">
+            <h1 style="font-family: var(--font-serif); font-size: 3rem; color: var(--navy);">The Newsroom Blog</h1>
+            <p style="color: var(--text-mid); font-size: 1.1rem; max-width: 700px; margin: 15px auto 0;">Beyond the headlines: Editorial notes, community voices, and cultural deep dives from the STACKLY newsroom.</p>
+        </div>
+
+        <div class="blog-grid">
+            <article class="card">
+                <div class="card-img-wrap">
+                    <img src="images/hero_main.webp" alt="Blog" class="card-img">
+                    <span class="category-badge">Editorial</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Behind the Lens: How We Documented the Himalayan Reforestation Effort</h3>
+                    <p class="card-excerpt">A first-person account from our photojournalist team on spending three weeks in the remote villages of Himachal Pradesh.</p>
+                    <div class="card-meta">
+                        <span class="author">Karan Verma</span>
+                        <span class="dot">•</span>
+                        <span>May 12, 2026</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-img-wrap">
+                    <img src="images/hero_business.webp" alt="Blog" class="card-img">
+                    <span class="category-badge">Future</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">The Future of Data Privacy in India's Growing Digital Economy</h3>
+                    <p class="card-excerpt">Our legal analyst breaks down the implications of the new Digital Rights Bill for the everyday consumer.</p>
+                    <div class="card-meta">
+                        <span class="author">Sita Raman</span>
+                        <span class="dot">•</span>
+                        <span>May 10, 2026</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-img-wrap">
+                    <img src="images/hero_tech.webp" alt="Blog" class="card-img">
+                    <span class="category-badge">Culture</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Rediscovering Local Flavours: The Revival of Indigenous Grains in Urban Areas</h3>
+                    <p class="card-excerpt">How millets and traditional grains are making a comeback in boutique cafes across Mumbai and Bengaluru.</p>
+                    <div class="card-meta">
+                        <span class="author">Anjali Nair</span>
+                        <span class="dot">•</span>
+                        <span>May 08, 2026</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-img-wrap">
+                    <img src="images/hero_sports.webp" alt="Blog" class="card-img">
+                    <span class="category-badge">Voices</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Letter from the Editor: Our Continued Commitment to Independent Journalism</h3>
+                    <p class="card-excerpt">Meera Iyer reflects on six years of STACKLY and the importance of fearless reporting in the modern age.</p>
+                    <div class="card-meta">
+                        <span class="author">Meera Iyer</span>
+                        <span class="dot">•</span>
+                        <span>May 05, 2026</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-img-wrap">
+                    <img src="images/hero_main.webp" alt="Blog" class="card-img">
+                    <span class="category-badge">Community</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Empowering Local Voices: The New STACKLY Community Journalism Initiative</h3>
+                    <p class="card-excerpt">Join our program to become a verified community reporter and share stories from your city with millions.</p>
+                    <div class="card-meta">
+                        <span class="author">Community Team</span>
+                        <span class="dot">•</span>
+                        <span>May 02, 2026</span>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 80px;">
+            <a href="#" class="btn-submit" style="display: inline-block; width: auto; padding: 15px 40px; text-decoration: none; background: var(--navy);">View More Posts</a>
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-logo">
+                    <div class="logo-text">STACK<span>LY</span></div>
+                    <p class="footer-desc">India's most trusted independent news platform. Fearless journalism, rigorous reporting, and a commitment to truth since 2020.</p>
+                    <div class="social-links">
+                        <a href="404.html" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="404.html" class="social-link"><i class="fab fa-x-twitter"></i></a>
+                        <a href="404.html" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="404.html" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="footer-col-title">News Sections</h4>
+                    <ul class="footer-links">
+                        <li><a href="india.html">India</a></li>
+                        <li><a href="world.html">World</a></li>
+                        <li><a href="politics.html">Politics</a></li>
+                        <li><a href="business.html">Business</a></li>
+                        <li><a href="sports.html">Sports</a></li>
+                        <li><a href="technology.html">Technology</a></li>
+                        <li><a href="entertainment.html">Entertainment</a></li>
+                        <li><a href="science.html">Science</a></li>
+                        <li><a href="opinion.html">Opinion</a></li>
+                        <li><a href="magazine.html">Magazine</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-col-title">Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About STACKLY</a></li>
+                        <li><a href="blog.html">Community Blog</a></li>
+                        <li><a href="404.html">Editorial Team</a></li>
+                        <li><a href="404.html">Careers</a></li>
+                        <li><a href="service.html">Our Services</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-col-title">Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="404.html">Advertise</a></li>
+                        <li><a href="404.html">Support</a></li>
+                        <li><a href="404.html">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-bottom-text">&copy; 2026 STACKLY Media Pvt. Ltd. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
